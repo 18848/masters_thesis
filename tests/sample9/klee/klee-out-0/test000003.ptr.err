@@ -1,0 +1,14 @@
+Error: memory error: double free
+File: main.c
+Line: 14
+assembly.ll line: 575
+State: 1
+Stack: 
+	#000000575 in test4(139166588829696) at main.c:14
+	#100000607 in __user_main(1, 140392265121792) at main.c:25
+	#200000375 in __uClibc_main(140376595202048, 1, 140392265121792, 0, 0, 0, 0) at libc/misc/internals/__uClibc_main.c:401
+	#300000547 in main(1, 140392265121792)
+Info: 
+	address: 139514481180672
+	next: object at 139146724605952 of size 4
+		MO6327[4] allocated at __user_main():  %4 = alloca i32, align 4

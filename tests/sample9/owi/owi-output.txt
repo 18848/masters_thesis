@@ -1,0 +1,1044 @@
+typechecking ...
+typechecking ...
+linking      ...
+interpreting ...
+stack        : [  ]
+running instr: i32.const 1024
+stack        : [ 1024 ]
+running instr: i32.const 0
+stack        : [ 0 ; 1024 ]
+running instr: i32.const 5
+stack        : [ 5 ; 0 ; 1024 ]
+running instr: memory.init 0
+stack        : [  ]
+running instr: data.drop 0
+stack        : [  ]
+stack        : [  ]
+running instr: i32.const 1032
+stack        : [ 1032 ]
+running instr: i32.const 0
+stack        : [ 0 ; 1032 ]
+running instr: i32.const 4
+stack        : [ 4 ; 0 ; 1032 ]
+running instr: memory.init 1
+stack        : [  ]
+running instr: data.drop 1
+stack        : [  ]
+stack        : [  ]
+running instr: call 8
+calling func : func anonymous
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+running instr: i32.const 0
+stack        : [ 0 ; 0 ]
+running instr: call 7
+calling func : func anonymous
+stack        : [  ]
+running instr: global.get 0
+stack        : [ 8389648 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389648 ]
+running instr: i32.sub
+stack        : [ 8389632 ]
+running instr: local.tee 2
+stack        : [ 8389632 ]
+running instr: global.set 0
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_0) ; 8389632 ]
+running instr: i32.store8 offset=6 align=1
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_1) ; 8389632 ]
+running instr: i32.store8 offset=7 align=1
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_2) ; 8389632 ]
+running instr: i32.store8 offset=8 align=1
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_3) ; 8389632 ]
+running instr: i32.store8 offset=9 align=1
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_4) ; 8389632 ]
+running instr: i32.store8 offset=10 align=1
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_5) ; 8389632 ]
+running instr: i32.store8 offset=11 align=1
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_6) ; 8389632 ]
+running instr: i32.store8 offset=12 align=1
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_7) ; 8389632 ]
+running instr: i32.store8 offset=13 align=1
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_8) ; 8389632 ]
+running instr: i32.store8 offset=14 align=1
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: call 3
+stack        : [ (i32.extend_i24_u symbol_9) ; 8389632 ]
+running instr: local.tee 3
+stack        : [ (i32.extend_i24_u symbol_9) ; 8389632 ]
+running instr: i32.store8 offset=15 align=1
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_9) ]
+running instr: i32.eqz
+stack        : [ (i32.of_bool (bool.eq (i32.extend_i24_u symbol_9) 0)) ]
+running instr: call 2
+stack        : [  ]
+running instr: i32.const 10
+stack        : [ 10 ]
+running instr: call 4
+calling func : func anonymous
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+running instr: i32.const -2147483648
+stack        : [ -2147483648 ; 0 ]
+running instr: local.get 0
+stack        : [ 10 ; -2147483648 ; 0 ]
+running instr: i32.clz
+stack        : [ 28 ; -2147483648 ; 0 ]
+running instr: i32.shr_u
+stack        : [ 8 ; 0 ]
+running instr: local.tee 1
+stack        : [ 8 ; 0 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8 ; 0 ]
+running instr: local.get 1
+stack        : [ 8 ; 16 ; 8 ; 0 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8 ; 16 ; 8 ; 0 ]
+running instr: i32.lt_u
+stack        : [ 1 ; 16 ; 8 ; 0 ]
+running instr: select
+stack        : [ 8 ; 0 ]
+running instr: local.tee 1
+stack        : [ 8 ; 0 ]
+running instr: i32.const 0
+stack        : [ 0 ; 8 ; 0 ]
+running instr: i32.load offset=1032 align=4
+stack        : [ 8389648 ; 8 ; 0 ]
+running instr: local.tee 2
+stack        : [ 8389648 ; 8 ; 0 ]
+running instr: local.get 1
+stack        : [ 8 ; 8389648 ; 8 ; 0 ]
+running instr: i32.const -1
+stack        : [ -1 ; 8 ; 8389648 ; 8 ; 0 ]
+running instr: i32.add
+stack        : [ 7 ; 8389648 ; 8 ; 0 ]
+running instr: i32.and
+stack        : [ 0 ; 8 ; 0 ]
+running instr: local.tee 1
+stack        : [ 0 ; 8 ; 0 ]
+running instr: i32.sub
+stack        : [ 8 ; 0 ]
+running instr: i32.const 0
+stack        : [ 0 ; 8 ; 0 ]
+running instr: local.get 1
+stack        : [ 0 ; 0 ; 8 ; 0 ]
+running instr: select
+stack        : [ 0 ; 0 ]
+running instr: local.get 2
+stack        : [ 8389648 ; 0 ; 0 ]
+running instr: i32.add
+stack        : [ 8389648 ; 0 ]
+running instr: local.tee 1
+stack        : [ 8389648 ; 0 ]
+running instr: local.get 0
+stack        : [ 10 ; 8389648 ; 0 ]
+running instr: i32.add
+stack        : [ 8389658 ; 0 ]
+running instr: i32.store offset=1032 align=4
+stack        : [  ]
+running instr: local.get 1
+stack        : [ 8389648 ]
+running instr: local.get 0
+stack        : [ 10 ; 8389648 ]
+running instr: call 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: local.set 3
+stack        : [  ]
+running instr: (block
+  local.get 2
+  i32.const 6
+  i32.add
+  i32.const 1024
+  call 6
+  br_if 0
+  local.get 3
+  call 5)
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: i32.const 6
+stack        : [ 6 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389638 ]
+running instr: i32.const 1024
+stack        : [ 1024 ; 8389638 ]
+running instr: call 6
+calling func : func anonymous
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+running instr: local.set 2
+stack        : [  ]
+running instr: (block
+  local.get 0
+  i32.load8_u align=1
+  local.tee 3
+  i32.eqz
+  br_if 0
+  local.get 0
+  i32.const 1
+  i32.add
+  local.set 0
+  (loop
+    (block
+      local.get 3
+      i32.const 255
+      i32.and
+      local.get 1
+      i32.load8_u align=1
+      i32.eq
+      br_if 0
+      local.get 3
+      local.set 2
+      br 2)
+    local.get 1
+    i32.const 1
+    i32.add
+    local.set 1
+    local.get 0
+    i32.load8_u align=1
+    local.set 3
+    local.get 0
+    i32.const 1
+    i32.add
+    local.set 0
+    local.get 3
+    br_if 0))
+stack        : [  ]
+running instr: local.get 0
+stack        : [ 8389638 ]
+running instr: i32.load8_u align=1
+stack        : [ (i32.extend_i24_u symbol_0) ]
+running instr: local.tee 3
+stack        : [ (i32.extend_i24_u symbol_0) ]
+running instr: i32.eqz
+stack        : [ (i32.of_bool (bool.eq (i32.extend_i24_u symbol_0) 0)) ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 0 ]
+running instr: i32.const 24
+stack        : [  ]
+running instr: local.get 0
+stack        : [ 8389638 ]
+running instr: i32.const 1
+stack        : [ 24 ; 0 ]
+stack        : [ 1 ; 8389638 ]
+running instr: i32.add
+stack        : [ 8389639 ]
+running instr: i32.shl
+running instr: local.set 0
+stack        : [ 0 ]
+running instr: i32.const 24
+stack        : [ 24 ; 0 ]
+running instr: i32.shr_s
+stack        : [ 0 ]
+running instr: local.get 1
+stack        : [ 1024 ; 0 ]
+running instr: i32.load8_s align=1
+stack        : [  ]
+stack        : [ 66 ; 0 ]
+running instr: i32.sub
+stack        : [ -66 ]
+stack        : [ -66 ]
+running instr: br_if 0
+running instr: (loop
+  (block
+    local.get 3
+    i32.const 255
+    i32.and
+    local.get 1
+    i32.load8_u align=1
+    i32.eq
+    br_if 0
+    local.get 3
+    local.set 2
+    br 2)
+  local.get 1
+  i32.const 1
+  i32.add
+  local.set 1
+  local.get 0
+  i32.load8_u align=1
+  local.set 3
+  local.get 0
+  i32.const 1
+  i32.add
+  local.set 0
+  local.get 3
+  br_if 0)
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [  ]
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+running instr: (block
+  local.get 3
+  i32.const 255
+  i32.and
+  local.get 1
+  i32.load8_u align=1
+  i32.eq
+  br_if 0
+  local.get 3
+  local.set 2
+  br 2)
+stack        : [  ]
+running instr: local.get 3
+stack        : [ 8389632 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389648 ]
+stack        : [ (i32.extend_i24_u symbol_0) ]
+running instr: i32.const 255
+running instr: global.set 0
+stack        : [  ]
+stack        : [ 255 ; (i32.extend_i24_u symbol_0) ]
+running instr: i32.and
+running instr: i32.const 0
+stack        : [ (i32.and (i32.extend_i24_u symbol_0) 255) ]
+stack        : [ 0 ]
+running instr: local.get 1
+stack        : [ 1024 ; (i32.and (i32.extend_i24_u symbol_0) 255) ]
+stack        : [ 0 ]
+running instr: i32.load8_u align=1
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+stack        : [ 66 ; (i32.and (i32.extend_i24_u symbol_0) 255) ]
+running instr: i32.eq
+stack        : [ (i32.of_bool
+                  (bool.eq (i32.and (i32.extend_i24_u symbol_0) 255) 66)) ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 1
+stack        : [ 1024 ]
+running instr: i32.const 1
+stack        : [ 1 ; 1024 ]
+running instr: i32.add
+stack        : [ 1025 ]
+running instr: local.set 1
+stack        : [  ]
+running instr: local.get 0
+stack        : [ 8389639 ]
+running instr: i32.load8_u align=1
+stack        : [ (i32.extend_i24_u symbol_1) ]
+running instr: local.set 3
+stack        : [  ]
+running instr: local.get 0
+stack        : [ 8389639 ]
+running instr: i32.const 1
+stack        : [ 1 ; 8389639 ]
+running instr: i32.add
+stack        : [ 8389640 ]
+running instr: local.set 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_1) ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_0) ]
+running instr: local.set 2
+stack        : [  ]
+running instr: br 2
+stack        : [  ]
+running instr: local.get 2
+stack        : [ (i32.extend_i24_u symbol_0) ]
+running instr: i32.const 24
+stack        : [ 24 ; (i32.extend_i24_u symbol_0) ]
+running instr: i32.shl
+stack        : [  ]
+stack        : [ (i32.shl (i32.extend_i24_u symbol_0) 24) ]
+running instr: i32.const 24
+running instr: (block
+  local.get 3
+  i32.const 255
+  i32.and
+  local.get 1
+  i32.load8_u align=1
+  i32.eq
+  br_if 0
+  local.get 3
+  local.set 2
+  br 2)
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_1) ]
+running instr: i32.const 255
+stack        : [ 24 ; (i32.shl (i32.extend_i24_u symbol_0) 24) ]
+stack        : [ 255 ; (i32.extend_i24_u symbol_1) ]
+running instr: i32.shr_s
+running instr: i32.and
+stack        : [ (i32.and (i32.extend_i24_u symbol_1) 255) ]
+running instr: local.get 1
+stack        : [ (i32.shr (i32.shl (i32.extend_i24_u symbol_0) 24) 24) ]
+running instr: local.get 1
+stack        : [ 1025 ; (i32.and (i32.extend_i24_u symbol_1) 255) ]
+stack        : [ 1024 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_0) 24) 24) ]
+running instr: i32.load8_s align=1
+running instr: i32.load8_u align=1
+stack        : [ 66 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_0) 24) 24) ]
+running instr: i32.sub
+stack        : [ 85 ; (i32.and (i32.extend_i24_u symbol_1) 255) ]
+running instr: i32.eq
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_0) 24) 24) 66) ]
+stack        : [ (i32.of_bool
+                  (bool.eq (i32.and (i32.extend_i24_u symbol_1) 255) 85)) ]
+running instr: br_if 0
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_0) 24) 24) 66) ]
+running instr: br_if 0
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 0 ]
+running instr: i32.const 24
+stack        : [  ]
+stack        : [ 24 ; 0 ]
+running instr: i32.shl
+stack        : [ 0 ]
+running instr: local.get 1
+stack        : [ 1025 ]
+running instr: i32.const 1
+running instr: i32.const 24
+stack        : [ 1 ; 1025 ]
+stack        : [ 24 ; 0 ]
+running instr: i32.shr_s
+stack        : [ 0 ]
+running instr: local.get 1
+stack        : [ 1025 ; 0 ]
+running instr: i32.load8_s align=1
+running instr: i32.add
+stack        : [ 1026 ]
+running instr: local.set 1
+stack        : [  ]
+running instr: local.get 0
+stack        : [ 8389640 ]
+running instr: i32.load8_u align=1
+stack        : [ 85 ; 0 ]
+stack        : [ (i32.extend_i24_u symbol_2) ]
+running instr: local.set 3
+stack        : [  ]
+running instr: local.get 0
+running instr: i32.sub
+stack        : [ 8389640 ]
+running instr: i32.const 1
+stack        : [ 1 ; 8389640 ]
+running instr: i32.add
+stack        : [ 8389641 ]
+stack        : [ -85 ]
+running instr: local.set 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_2) ]
+running instr: br_if 0
+stack        : [ -85 ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389648 ]
+running instr: global.set 0
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+stack        : [ 0 ]
+running instr: drop
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_1) ]
+running instr: local.set 2
+stack        : [  ]
+running instr: br 2
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ (i32.extend_i24_u symbol_1) ]
+running instr: i32.const 24
+stack        : [  ]
+stack        : [ 24 ; (i32.extend_i24_u symbol_1) ]
+running instr: i32.shl
+stack        : [ (i32.shl (i32.extend_i24_u symbol_1) 24) ]
+running instr: i32.const 24
+stack        : [ 24 ; (i32.shl (i32.extend_i24_u symbol_1) 24) ]
+running instr: i32.shr_s
+stack        : [ (i32.shr (i32.shl (i32.extend_i24_u symbol_1) 24) 24) ]
+running instr: local.get 1
+stack        : [ 1025 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_1) 24) 24) ]
+running instr: i32.load8_s align=1
+stack        : [ 85 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_1) 24) 24) ]
+running instr: i32.sub
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_1) 24) 24) 85) ]
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_1) 24) 24) 85) ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389648 ]
+running instr: global.set 0
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+stack        : [ 0 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: (block
+  local.get 3
+  i32.const 255
+  i32.and
+  local.get 1
+  i32.load8_u align=1
+  i32.eq
+  br_if 0
+  local.get 3
+  local.set 2
+  br 2)
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_2) ]
+running instr: i32.const 255
+stack        : [ 255 ; (i32.extend_i24_u symbol_2) ]
+running instr: i32.and
+stack        : [ (i32.and (i32.extend_i24_u symbol_2) 255) ]
+running instr: local.get 1
+stack        : [ 1026 ; (i32.and (i32.extend_i24_u symbol_2) 255) ]
+running instr: i32.load8_u align=1
+stack        : [ 71 ; (i32.and (i32.extend_i24_u symbol_2) 255) ]
+running instr: i32.eq
+stack        : [ (i32.of_bool
+                  (bool.eq (i32.and (i32.extend_i24_u symbol_2) 255) 71)) ]
+running instr: br_if 0
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 0 ]
+running instr: i32.const 24
+stack        : [ 24 ; 0 ]
+running instr: i32.shl
+stack        : [ 0 ]
+running instr: i32.const 24
+stack        : [ 24 ; 0 ]
+running instr: i32.shr_s
+stack        : [ 0 ]
+running instr: local.get 1
+stack        : [ 1026 ; 0 ]
+running instr: i32.load8_s align=1
+stack        : [ 71 ; 0 ]
+running instr: i32.sub
+stack        : [ -71 ]
+stack        : [ -71 ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389648 ]
+running instr: global.set 0
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+stack        : [ 0 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389648 ]
+running instr: global.set 0
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+stack        : [ 0 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 1
+stack        : [ 1026 ]
+running instr: i32.const 1
+stack        : [ 1 ; 1026 ]
+running instr: i32.add
+stack        : [ 1027 ]
+running instr: local.set 1
+stack        : [  ]
+running instr: local.get 0
+stack        : [ 8389641 ]
+running instr: i32.load8_u align=1
+stack        : [ (i32.extend_i24_u symbol_3) ]
+running instr: local.set 3
+stack        : [  ]
+running instr: local.get 0
+stack        : [ 8389641 ]
+running instr: i32.const 1
+stack        : [  ]
+stack        : [ 1 ; 8389641 ]
+running instr: local.get 3
+running instr: i32.add
+stack        : [ 8389642 ]
+running instr: local.set 0
+stack        : [  ]
+stack        : [ (i32.extend_i24_u symbol_2) ]
+running instr: local.set 2
+stack        : [  ]
+running instr: local.get 3
+running instr: br 2
+stack        : [  ]
+running instr: local.get 2
+stack        : [ (i32.extend_i24_u symbol_3) ]
+running instr: br_if 0
+stack        : [ (i32.extend_i24_u symbol_2) ]
+running instr: i32.const 24
+stack        : [ 24 ; (i32.extend_i24_u symbol_2) ]
+running instr: i32.shl
+stack        : [ (i32.shl (i32.extend_i24_u symbol_2) 24) ]
+running instr: i32.const 24
+stack        : [ 24 ; (i32.shl (i32.extend_i24_u symbol_2) 24) ]
+running instr: i32.shr_s
+stack        : [ (i32.shr (i32.shl (i32.extend_i24_u symbol_2) 24) 24) ]
+running instr: local.get 1
+stack        : [ 1026 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_2) 24) 24) ]
+running instr: i32.load8_s align=1
+stack        : [ 71 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_2) 24) 24) ]
+running instr: i32.sub
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_2) 24) 24) 71) ]
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_2) 24) 24) 71) ]
+running instr: br_if 0
+stack        : [  ]
+running instr: (block
+  local.get 3
+  i32.const 255
+  i32.and
+  local.get 1
+  i32.load8_u align=1
+  i32.eq
+  br_if 0
+  local.get 3
+  local.set 2
+  br 2)
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_3) ]
+running instr: i32.const 255
+stack        : [ 255 ; (i32.extend_i24_u symbol_3) ]
+running instr: i32.and
+stack        : [ (i32.and (i32.extend_i24_u symbol_3) 255) ]
+running instr: local.get 1
+stack        : [ 1027 ; (i32.and (i32.extend_i24_u symbol_3) 255) ]
+running instr: i32.load8_u align=1
+stack        : [ 33 ; (i32.and (i32.extend_i24_u symbol_3) 255) ]
+running instr: i32.eq
+stack        : [ (i32.of_bool
+                  (bool.eq (i32.and (i32.extend_i24_u symbol_3) 255) 33)) ]
+running instr: br_if 0
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 0 ]
+running instr: i32.const 24
+stack        : [ 24 ; 0 ]
+running instr: i32.shl
+stack        : [ 0 ]
+running instr: i32.const 24
+stack        : [ 24 ; 0 ]
+running instr: i32.shr_s
+stack        : [ 0 ]
+running instr: local.get 1
+stack        : [ 1027 ; 0 ]
+running instr: i32.load8_s align=1
+stack        : [ 33 ; 0 ]
+running instr: i32.sub
+stack        : [ -33 ]
+stack        : [ -33 ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389648 ]
+running instr: global.set 0
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+stack        : [ 0 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 1
+stack        : [ 1027 ]
+running instr: i32.const 1
+stack        : [ 1 ; 1027 ]
+running instr: i32.add
+stack        : [  ]
+stack        : [ 1028 ]
+running instr: local.set 1
+stack        : [  ]
+running instr: local.get 0
+stack        : [ 8389642 ]
+running instr: local.get 3
+running instr: i32.load8_u align=1
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389648 ]
+running instr: global.set 0
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+stack        : [ 0 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+stack        : [ (i32.extend_i24_u symbol_4) ]
+running instr: local.set 3
+stack        : [  ]
+running instr: local.get 0
+stack        : [ 8389642 ]
+running instr: i32.const 1
+stack        : [ 1 ; 8389642 ]
+running instr: i32.add
+stack        : [ 8389643 ]
+running instr: local.set 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_4) ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_3) ]
+running instr: local.set 2
+stack        : [  ]
+running instr: br 2
+stack        : [  ]
+running instr: local.get 2
+stack        : [ (i32.extend_i24_u symbol_3) ]
+running instr: i32.const 24
+stack        : [ 24 ; (i32.extend_i24_u symbol_3) ]
+running instr: i32.shl
+stack        : [ (i32.shl (i32.extend_i24_u symbol_3) 24) ]
+running instr: i32.const 24
+stack        : [ 24 ; (i32.shl (i32.extend_i24_u symbol_3) 24) ]
+running instr: i32.shr_s
+stack        : [ (i32.shr (i32.shl (i32.extend_i24_u symbol_3) 24) 24) ]
+running instr: local.get 1
+stack        : [ 1027 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_3) 24) 24) ]
+running instr: i32.load8_s align=1
+stack        : [ 33 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_3) 24) 24) ]
+running instr: i32.sub
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_3) 24) 24) 33) ]
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_3) 24) 24) 33) ]
+running instr: br_if 0
+stack        : [  ]
+running instr: (block
+  local.get 3
+  i32.const 255
+  i32.and
+  local.get 1
+  i32.load8_u align=1
+  i32.eq
+  br_if 0
+  local.get 3
+  local.set 2
+  br 2)
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_4) ]
+running instr: i32.const 255
+stack        : [ 255 ; (i32.extend_i24_u symbol_4) ]
+running instr: i32.and
+stack        : [ (i32.and (i32.extend_i24_u symbol_4) 255) ]
+running instr: local.get 1
+stack        : [ 1028 ; (i32.and (i32.extend_i24_u symbol_4) 255) ]
+running instr: i32.load8_u align=1
+stack        : [ 0 ; (i32.and (i32.extend_i24_u symbol_4) 255) ]
+running instr: i32.eq
+stack        : [ (i32.of_bool
+                  (bool.eq (i32.and (i32.extend_i24_u symbol_4) 255) 0)) ]
+running instr: br_if 0
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 0 ]
+running instr: i32.const 24
+stack        : [ 24 ; 0 ]
+running instr: i32.shl
+stack        : [ 0 ]
+running instr: i32.const 24
+stack        : [ 24 ; 0 ]
+running instr: i32.shr_s
+stack        : [ 0 ]
+running instr: local.get 1
+stack        : [ 1028 ; 0 ]
+running instr: i32.load8_s align=1
+stack        : [ 0 ; 0 ]
+running instr: i32.sub
+stack        : [ 0 ]
+stack        : [ 0 ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389648 ]
+running instr: global.set 0
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+stack        : [ 0 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (i32.extend_i24_u symbol_4) ]
+running instr: local.set 2
+stack        : [  ]
+running instr: br 2
+stack        : [  ]
+running instr: local.get 2
+stack        : [ (i32.extend_i24_u symbol_4) ]
+running instr: i32.const 24
+stack        : [ 24 ; (i32.extend_i24_u symbol_4) ]
+running instr: i32.shl
+stack        : [ (i32.shl (i32.extend_i24_u symbol_4) 24) ]
+running instr: i32.const 24
+stack        : [ 24 ; (i32.shl (i32.extend_i24_u symbol_4) 24) ]
+running instr: i32.shr_s
+stack        : [ (i32.shr (i32.shl (i32.extend_i24_u symbol_4) 24) 24) ]
+running instr: local.get 1
+stack        : [ 1028 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_4) 24) 24) ]
+running instr: i32.load8_s align=1
+stack        : [ 0 ; (i32.shr (i32.shl (i32.extend_i24_u symbol_4) 24) 24) ]
+running instr: i32.sub
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_4) 24) 24) 0) ]
+stack        : [ (i32.sub
+                  (i32.shr (i32.shl (i32.extend_i24_u symbol_4) 24) 24) 0) ]
+running instr: br_if 0
+stack        : [  ]
+running instr: local.get 3
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 5
+calling func : func anonymous
+stack        : [  ]
+running instr: local.get 0
+stack        : [ (Ptr (i32 8389648) 0) ]
+running instr: call 1
+stack        : [ 8389648 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+running instr: local.get 2
+stack        : [ 8389632 ]
+running instr: i32.const 16
+stack        : [ 16 ; 8389632 ]
+running instr: i32.add
+stack        : [ 8389648 ]
+running instr: global.set 0
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+stack        : [ 0 ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+owi: internal error, uncaught exception:
+     Failure("Memory leak double free")
+     Raised at Stdlib__Domain.join in file "domain.ml", line 296, characters 16-24
+     Called from Stdlib__Array.iter in file "array.ml", line 113, characters 31-48
+     Called from Owi__Wq.read_as_seq.(fun) in file "src/data_structures/wq.ml", line 17, characters 4-16
+     Called from Owi__Cmd_sym.cmd.print_and_count_failures in file "src/cmd/cmd_sym.ml", line 99, characters 10-20
+     Called from Owi__Cmd_sym.cmd in file "src/cmd/cmd_sym.ml", line 130, characters 15-49
+     Called from Cmdliner_term.app.(fun) in file "cmdliner_term.ml", line 24, characters 19-24
+     Called from Cmdliner_eval.run_parser in file "cmdliner_eval.ml", line 35, characters 37-44

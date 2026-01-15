@@ -1,0 +1,19 @@
+
+% para incluir palavras-chave no resumo
+\makeatletter
+\newcommand{\@keywords}{Symbolic Execution, Application Security Testing, Static Code Analysis, KLEE, Owi}
+% para definir palavras-chave manualmente, descomentar a linha seguinte
+% \newcommand{\keywordsPage}{}
+% para incluir as palavras-chave definidas, chamar o comando \@keywords
+% exemplo: Palavras-Chave: \@keywords
+\makeatother
+
+As the world quickly progresses, software is more and more spread across all areas including the ones claimed as having a high risk of attacks such as finance, health care and banking sectors. 
+
+To prevent successful attacks, the piece of software must be tested against its security and reliability, what is commonly known as \acrfull{ast}. Two common methods to perform this sort of testing are usually described as two sides of one coin: White\discretionary{-}{-}{-}box and Black-box testing, source-code analysis and application reliability, but the more common names are \acrfull{sast} and \acrfull{dast}.
+
+Looking at dynamic techniques, there are examples such as fuzzing and dynamic taint analysis that require a running application but prove to be very quick in execution and show a low rate of false positives. However, static analysis, with the example of symbolic execution, is usually more prone to errors (false positives) and takes considerably more time to run on larger projects.
+
+Some examples of symbolic execution engines are \acrfull{spf}, Jalangi2, SymJS, Cloud9 and Kite, but the ones we will be discussing throughout this document are KLEE and Owi. A few samples of code will be analysed with both tools and the metrics extracted from each scan helps us build a fundamented comparison between the two.
+
+This work dedicates to two symbolic execution tools and their study in an attempt to understand how they compare, how they assist in protecting source code, and what alternatives are available to software development teams and individuals that intend to improve their security testing without major impact in their development lifecycle.

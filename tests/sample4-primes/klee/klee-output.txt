@@ -1,0 +1,24 @@
+KLEE: NOTE: Using klee-uclibc : /IPCA/Thesis/klee/install/klee/build/runtime/lib/klee-uclibc.bca
+KLEE: output directory is "/IPCA/Thesis/tests/owi_primes/klee/klee-out-1"
+KLEE: Using STP solver backend
+KLEE: SAT solver: MiniSat
+KLEE: Deterministic allocator: Using quarantine queue size 8
+KLEE: Deterministic allocator: globals (start-address=0x7f1c00ab6000 size=10 GiB)
+KLEE: Deterministic allocator: constants (start-address=0x7f1980ab6000 size=10 GiB)
+KLEE: Deterministic allocator: heap (start-address=0x7e1980ab6000 size=1024 GiB)
+KLEE: Deterministic allocator: stack (start-address=0x7df980ab6000 size=128 GiB)
+KLEE: WARNING: undefined reference to function: __syscall_rt_sigaction
+KLEE: WARNING: undefined reference to function: fcntl
+KLEE: WARNING: undefined reference to function: fstat
+KLEE: WARNING: undefined reference to function: ioctl
+KLEE: WARNING: undefined reference to function: open
+KLEE: WARNING: undefined reference to function: write
+KLEE: WARNING: undefined reference to function: kill (UNSAFE)!
+KLEE: WARNING ONCE: calling external: ioctl(0, 21505, 138555656200192) at libc/termios/tcgetattr.c:43 12
+KLEE: WARNING ONCE: calling __user_main with extra arguments.
+KLEE: WARNING ONCE: Alignment of memory from call "malloc" is not modelled. Using alignment of 8.
+
+KLEE: done: total instructions = 112764
+KLEE: done: completed paths = 99
+KLEE: done: partially completed paths = 0
+KLEE: done: generated tests = 99

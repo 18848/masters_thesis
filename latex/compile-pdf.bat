@@ -1,0 +1,1 @@
+latexmk -pdf -auxdir=.build/ -f main && REM -gg

@@ -1,0 +1,27 @@
+#define MAX_SIZE 100
+
+#include <owi.h>
+#include <stdlib.h>
+
+void primes(int *is_prime, int n) {
+    for (int i = 0; i < n; ++i) is_prime[i] = 1;
+    for (int i = 2; i * i < n; ++i) {
+        if (!is_prime[i]) continue;
+        for (int j = i; i * j < n; ++j) {
+            is_prime[i * j] = 0;
+        }
+    }
+}
+
+int main(void) {
+    int *is_prime;
+    is_prime = malloc(MAX_SIZE * sizeof(int));
+
+    int n = owi_i32();
+    owi_assume(n >= 2);
+    owi_assume(n <= MAX_SIZE);
+
+    primes(is_prime, n);
+    free(is_prime);
+    return 0;
+}

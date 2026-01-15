@@ -1,0 +1,91 @@
+
+\chapter{INTRODUCTION} \label{chap:intro}
+In the digital era, it is evident that most individuals interact with devices running software that may be susceptible to exploitation. A fundamental principle in cybersecurity is that all software contains vulnerabilities; therefore, its security posture depends primarily on the difficulty of detection. The risk of attack correlates with the diligence of security teams in remediation efforts and the potential incentives available to attackers.
+
+\section{Motivation and Background}
+Considering this, software organizations must take action in defending their codebases in the most efficient manner when it comes to resources and time. Manual validations are based in human interaction, which is known to be very prone to errors, making it not cost-efficient. Also, as an application evolves in complexity, manual validation is not viable when it comes to the resources required, but also time as this is an operation that requires celerity. This procedure is often described as \acrfull{ast}.
+
+As such, many tools to find vulnerabilities in an automated fashion have been developed and distributed, each with their own set of pros and cons. The tools in question can be categorized as static or dynamic, and each on their own use different technics to accomplish different results. \acrfull{sast} ultimately relies on some variety of pattern matching, data-flow analysis, and symbolic execution \citep{Croft2021}, while \acrfull{dast} excels at mimicking realistic attacks and threats \citep{DAST_description}.
+
+\section{Objectives}\label{section:objectives}
+The objective is a comparison of two symbolic execution tools and see how they compare in terms of performance and their ability to detect vulnerabilities. To achieve this comparison, the tools must run on projects that are preferably coded in the same language, but if these tools do not support the same set of languages, the projects should have similar architecture or business logic/intent (e.g.: online stores, accounting services, ...). These tools will also be compared on how they can be tuned in order to achieve better results.
+
+For a better overview of how the comparison will be performed, here follows a set of questions and metrics used to measure the tools:
+\begin{itemize}
+    \item Time to test a project
+    \item CPU usage while testing a project
+    \item Memory usage while testing a project
+    \item Analysis of vulnerabilities detection (Youden's Index)
+    \item Complexity of the vulnerabilities detected
+    \item Ability to find vulnerabilities out-of-the-box
+    \item Ability to find vulnerabilities with proper manipulation
+    \item Effort of tuning the tool
+\end{itemize}
+
+In sum, the expected output is a clear comparison of tools that can assist developers and software companies in keeping code secure proactively and explain what differs between them and why one should pick one over the other(s). These is how we intend to answer the following research questions:
+
+\begin{itemize}
+    \item \textbf{Which tool is more effective at finding vulnerabilities?}
+    \item \textbf{Which tool is more efficient in terms of performance?}
+\end{itemize}
+
+\section{Research Method}\label{section:research_method}
+
+Design-Science Research is the most suitable research method for this work as it focuses on the creation and evaluation of artifacts that solve identified organizational problems \citep{Hevner2004}. In this case, the organizational problem is the need for efficient and effective tools to identify vulnerabilities in software applications, which is a critical concern for software development organizations aiming to enhance their security posture.
+
+\citet{Hevner2004} outlines 7 guidelines for conducting Design-Science Research, which will be followed in this study:
+\begin{enumerate}
+    \item \textbf{Design as an Artifact:} The primary artifacts in this research is the research itself - a comparative analysis of symbolic execution tools for vulnerability detection - and the repository with the samples used in the experiments (see \cref{chap:experiences}). 
+    \item \textbf{Problem Relevance:} The research addresses the practical problem of identifying effective symbolic execution tools for vulnerability detection in software applications. This research also guides practitioners in the setup and usage of these tools (see \cref{chap:symbolic_execution_tools}).
+    \item \textbf{Design Evaluation:} The evaluation of the symbolic execution tools will be conducted through empirical testing on selected software projects, measuring performance metrics and vulnerability detection capabilities (see \cref{chap:experiences}).
+    \item \textbf{Research Contributions:} The study aims to contribute to the field of software security by providing insights into the effectiveness and efficiency of different symbolic execution tools and offering guidance for practitioners in selecting appropriate tools (see \cref{chap:experiences}, particularly \cref{section:results}).
+    \item \textbf{Research Rigor:} The research will employ rigorous methodologies for tool selection, testing, and data analysis to ensure the validity and reliability of the findings (see \cref{section:test_environment}).
+    \item \textbf{Design as a Search Process:} The research will involve an iterative process of tool selection, testing, and refinement to identify the most effective and/or efficient symbolic execution tools (\cref{subsection:symbolic_exec_engines,section:engines_availability,chap:experiences}).
+    \item \textbf{Communication of Research:} The findings of the research will be documented and disseminated through academic publications and presentations to reach both the academic community and industry practitioners. This document serves as the primary medium for communicating the research process and findings, and the testing is shared in a public repository (url: \url{https://github.com/18848/masters_thesis}).
+\end{enumerate}
+
+The comparison of symbolic execution tools can be summed up by the question ``what is effective'' that \citet{Hevner2004} explained when discussing the behavioral-science  and design-science paradigms. The question proposed to answer looks into the design-science paradigm has it is required an evaluation of the available technologies, ``Design as a Search Process''. 
+
+To perform a valid comparison between symbolic execution tools, firstly there must be a selected set of tools to be compared and for such there must be set requirements that an engine has to fulfil in order to be elected as target of comparison. These requirements have to ensure the validity of the comparison of different tools, there are no two equal pieces of software, but they have to share some characteristics in order for a comparison to be logic.
+
+To compare these tools, execution and analysis must be done. For this to be properly done, one has to understand how and why they work, which requires a more theoretical study of these tools and consequently to research papers on and about them as well as documentation.
+
+As symbolic execution engines in their nature require source code of some kind, we will need to research and select some open-source software projects that allows the comparison of different tools. Fitting examples of this are the Test-Comp benchmarks \citep{Andrès2024}. This is where the previous step of setting requirements proves necessary; the more similar the different tools are, the more likely they are to be able to run on one same project, which allows for a better test case.
+
+Once prerequisites are fulfilled, selecting tools, setting them up and finding projects, the experimental phase begins; first the trial is done without any sort of modifications to understand the baseline of each tool:
+\begin{itemize}
+    \item Is the tool useless without proper tuning?
+    \item Can it find simple vulnerabilities out of the box?
+    \item Where/When does it become harder to find vulnerabilities?
+    \item How well does it perform in time and space?
+    \item How well does it perform under the Youden's Index?
+\end{itemize}
+
+After answering these questions and recording the results, the investigation moves to the modifications phase:
+\begin{itemize}
+    \item How can the tool be improved/tuned?
+    \item How expensive is it to improve the results? (resources spent tuning the tool)
+    \item Can we improve the tool in the number of results? How?
+    \item Can we improve the tool in terms of performance? How?
+    \item Can we improve both metrics at the same time?
+\end{itemize}
+
+If we're able to answer the previous questions, what follows is a comparison with the first set of results
+\begin{itemize}
+    \item Did we find more vulnerabilities?
+    \item How complex are the found vulnerabilities?
+    \item How does the Youden's Index compare?
+    \item How does the cost of working on the tool compare to the results' improvement?
+\end{itemize}
+
+All the previous points will be recorded, analyzed and compared in order to achieve a final comparison of the selected symbolic execution tools. The definition of these steps and questions is crucial to ensure that the comparison is fair, thorough, and provides valuable insights into the capabilities and limitations of each tool, as determined in the Research Rigor guideline.
+
+\section{Document Structure}
+
+\Cref{chap:literature_review}, \nameref{chap:literature_review}, presents a brief introduction to the theme at hand and its relevance to today's software dilemma of \acrlong{ast}. Two relevant methodologies of application testing are also discussed: \acrshort{sast} and \acrshort{dast}.
+
+To start the comparative work, \cref{chap:symbolic_execution_tools}, \nameref{chap:symbolic_execution_tools}, introduces the tools that will be tested, compared, and discussed in terms off what they offer, how they work and how to interact with them. For each tool, multiple topics will be covered: installation, available features, source code instrumentation, and finally, how to run the tools in the instrumented sources.
+
+Once everything required to start with \cref{chap:experiences}, \nameref{chap:experiences}, is ready, the code samples (or test cases) are introduced, the tests are conducted, and the information is collected. Before addressing the samples and testing, the test environment is described in detail, from how each sample's working directory was prepared to the testbed specifications. Only then is each sample detailed, instrumented, and scanned by both tools. In the end, multiple comparisons are done, and results are presented, showcasing performances and features.
+
+Finally, the \nameref{chap:conclusion} states how each tool compares, their weaknesses and strengths, as well as future work and possible improvements on this comparative study.

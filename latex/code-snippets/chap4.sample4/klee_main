@@ -1,0 +1,31 @@
+#define MAX_SIZE 100
+
+#include <klee/klee.h>|\label{line:4_4_include}|
+#include <stdlib.h>
+
+void primes(int *is_prime, int n) {
+    for (int i = 0; i < n; ++i)
+        is_prime[i] = 1;
+    for (int i = 2; i * i < n; ++i) {
+        if (!is_prime[i])
+            continue;
+        for (int j = i; i * j < n; ++j) {
+            is_prime[i * j] = 0;
+        }
+    }
+}
+
+int main(void)
+{
+    int *is_prime;
+    is_prime = malloc(MAX_SIZE * sizeof(int));
+
+    int n;
+    klee_make_symbolic(&n, sizeof n, "variable n");|\label{line:4_4_symbol}|
+    klee_assume(n >= 2);|\label{line:4_4_assume_a}|
+    klee_assume(n <= MAX_SIZE);|\label{line:4_4_assume_b}|
+
+    primes(is_prime, n);
+    free(is_prime);
+    return 0;
+}

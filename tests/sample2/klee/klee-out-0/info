@@ -1,0 +1,23 @@
+klee --libc=uclibc main.bc
+PID: 83772
+Using monotonic steady clock with 1/1000000000s resolution
+Started: 2024-12-19 00:42:02
+BEGIN searcher description
+<InterleavedSearcher> containing 2 searchers:
+RandomPathSearcher
+WeightedRandomSearcher::CoveringNew
+</InterleavedSearcher>
+END searcher description
+Finished: 2024-12-19 00:42:14
+Elapsed: 00:00:12
+KLEE: done: explored paths = 7438
+KLEE: done: avg. constructs per query = 18
+KLEE: done: total queries = 194
+KLEE: done: valid queries = 14
+KLEE: done: invalid queries = 180
+KLEE: done: query cex = 194
+
+KLEE: done: total instructions = 5375652
+KLEE: done: completed paths = 6675
+KLEE: done: partially completed paths = 763
+KLEE: done: generated tests = 6677

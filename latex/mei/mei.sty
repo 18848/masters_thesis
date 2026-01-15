@@ -1,0 +1,291 @@
+
+\usepackage[english]{babel}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{csquotes}
+\usepackage{lscape}
+\usepackage{graphicx}       % image package
+%NAL \usepackage{subcaption}     % package to allow images side by side (used in the first page)
+% \usepackage{setspace}       % line spacing package
+\usepackage{array}          % table package
+\usepackage{indentfirst}    % package to allow to indent first paragraph after a heading
+\usepackage[left=25mm,top=25mm,bottom=25mm,right=25mm]{geometry}
+\usepackage{ifthen}
+% Customizing of citations in the text
+
+%\bibliographystyle{mei/sp_por}
+%\usepackage{apacite}
+
+\RequirePackage[
+    style=ieee,
+    defernumbers=true,
+    % style=apa,
+    backend=biber,
+    natbib=true,
+    block=ragged,
+    ]{biblatex}
+%Add your library here
+\addbibresource{library.bib}
+
+
+% don't show day when using \today
+% use: \monthyeardate\today
+% before: May 1, 2012
+% after: May, 2012
+\usepackage{datetime}
+
+
+\usepackage{xurl}
+\usepackage{hyperref}
+\usepackage{subfig}
+\usepackage{times}
+
+% NL addition
+\usepackage{setspace}
+\usepackage{amssymb}
+\usepackage{enumitem}
+
+\usepackage{listings}
+
+\lstdefinestyle{mystyle}{
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbersep=5pt,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false,
+    frame=single,
+    frameround=ttff,
+    tabsize=2,
+}
+
+\lstset{style=mystyle}
+
+%\lstset{basicstyle=\small,
+ %       captionpos=b,
+%        breaklines=true,
+%        float=tp,
+%        xleftmargin=1.5em,
+%        xrightmargin=1.5em,
+%        frameround=ttff,
+%        frame=single,
+%       floatplacement=tbp,
+%       }
+
+\def\lstlistlistingname{Code Listings}
+\def\lstlistingname{Listing}
+
+\usepackage{xcolor}
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!20!black},
+    citecolor={blue!20!black},
+    urlcolor={blue!20!black}
+}
+
+\setlength{\parskip}{1ex}
+
+\makeatletter
+
+\def\curso{~~}
+\def\MEI{\def\curso{Mestrado em Engenharia Informática}}
+
+\def\proposta{~~}
+\def\propostaDissertacao{\renewcommand{\proposta}{Dissertação}}
+\def\propostaProjeto{\renewcommand{\proposta}{Projecto}}
+
+\def\AND{~\\[2mm]}
+\def\orient{~~}
+\newcommand{\orientador}[1]{\def\orient{#1}}
+\def\coorient{~~}
+\newcommand{\coorientador}[1]{\def\coorient{#1}}
+
+\def\subtitle{~~}
+\newcommand{\subtitulo}[1]{\def\subtitle{#1}}
+\def\endeletronico{~~}
+\newcommand{\email}[1]{\def\endeletronico{#1}}
+
+% NL - error ?
+%\usepackage{tocloft}
+%\renewcommand{\cftchapleader}{\cftdotfill{\cftdotsep}}
+
+\pagestyle{plain}
+
+\renewcommand{\maketitle}{%
+    \newgeometry{left=5mm,top=5mm,bottom=22mm,right=5mm}
+    \thispagestyle{empty}
+    \noindent\includegraphics[width=\textwidth]{mei/logos/FrontCoverLogo}
+    %\vfill
+    \vskip 40mm
+    \begin{flushright}
+    \begin{minipage}{145mm}
+    \begin{minipage}{110mm}
+        %{\Large \bf \curso}\\[20mm]
+        %{\large \textsc{\proposta}}\\[25mm]
+        {\fontfamily{cmss}\selectfont
+        {\LARGE \bf \textsc{\@title}}\\[2mm] %\textsc
+        {\LARGE {\subtitle}}\\[1mm] %\textsc
+        \vskip 30mm
+        {\large \@author}\\[4mm]
+        %\vskip 45mm
+        {\footnotesize \it Orientador}\\[1mm]
+        \orient\\[2mm]
+        % {\footnotesize \it Coorientador}\\[1mm]
+        % \coorient
+        \\[10mm]
+        %Trabalho realizado sob a orientação de:\\[2mm]
+        %\orient
+        %\vskip 15mm
+        {\footnotesize Dissertação apresentada\\
+ao Instituto Politécnico do Cávado e do Ave\\
+para obtenção do Grau de Mestre em Engenharia Informática}
+        \vskip 15mm
+        \@date }
+    \end{minipage}
+    \end{minipage}
+    \end{flushright}
+%    \clearpage{
+%    \pagestyle{empty}
+%    \cleardoublepage
+%    }
+    \newpage\thispagestyle{empty}
+    {\hspace{1cm}}
+    \newpage\thispagestyle{empty}
+    {\hspace{1cm}}
+    \newpage\thispagestyle{empty}
+    {\hspace{1cm}}
+    \restoregeometry
+    \bwtitle
+}
+
+\def\bwtitle{%
+    \newgeometry{left=5mm,top=5mm,bottom=50mm,right=5mm}
+    \thispagestyle{empty}
+    \noindent\includegraphics[width=\textwidth]{mei/logos/FrontCoverInnerLogo}
+    \vfill
+    \begin{flushright}
+    \begin{minipage}{145mm}
+    \begin{minipage}{110mm}
+        %{\Large \bf \curso}\\[20mm]
+        %{\large \textsc{\proposta}}\\[25mm]
+        {\fontfamily{cmss}\selectfont
+        {\LARGE \bf \textsc{\@title}}\\[2mm] %\textsc
+        {\LARGE {\subtitle}}\\[1mm] %\textsc
+        \vskip 30mm
+        {\large \@author}\\[4mm]
+        %\vskip 45mm
+        {\footnotesize \it Orientador}\\[1mm]
+        \orient\\[2mm]
+        % {\footnotesize \it Coorientador}\\[1mm]
+        % \coorient\\[10mm]
+        \\[10mm]
+        %Trabalho realizado sob a orientação de:\\[2mm]
+        %\orient
+        %\vskip 15mm
+        {\footnotesize Dissertação apresentada\\
+ao Instituto Politécnico do Cávado e do Ave\\
+para obtenção do Grau de Mestre em Engenharia Informática}
+        \vskip 15mm
+        \@date }
+    \end{minipage}
+    \end{minipage}
+    \end{flushright}
+    \restoregeometry
+    \declaracao
+}
+
+\def\declaracao{
+    \newpage
+    \thispagestyle{empty}
+    {\fontfamily{cmss}\selectfont
+    \noindent {\LARGE \textbf{DECLARAÇÃO}}\\}
+    \begin{spacing}{1.4}
+    \noindent\textbf{Nome: }\@author\\
+    \textbf{Endereço eletrónico: }\endeletronico\\
+    \textbf{Título da Dissertação: }\@title\\
+    \textbf{Subtítulo da Dissertação: }\subtitle\\
+    \textbf{Orientador: }\orient\\
+    \textbf{Coorientador: }\coorient\\
+    \textbf{Ano de conclusão: }2025\\
+    \textbf{Designação do Curso de Mestrado: }\curso\\[8mm]
+    \textbf{Nos exemplares das Dissertações /Projetos/ Relatórios de Estágio de mestrado ou de outros trabalhos entregues para prestação de Provas Públicas, e dos quais é obrigatoriamente enviado exemplares para depósito legal, deve constar uma das seguintes declarações:}\\
+    \begin{itemize}[leftmargin=*]
+        \item[$\boxtimes$] É AUTORIZADA A REPRODUÇÃO INTEGRAL DESTA DISSERTAÇÃO/TRABALHO APENAS PARA EFEITOS DE INVESTIGAÇÃO, MEDIANTE DECLARAÇÃO ESCRITA DO INTERESSADO, QUE A TAL SE COMPROMETE;
+        \item[$\square$] É AUTORIZADA A REPRODUÇÃO PARCIAL DESTA DISSERTAÇÃO/TRABALHO (indicar, caso tal seja necessário, nº máximo de páginas, ilustrações, gráficos, etc.), APENAS PARA EFEITOS DE INVESTIGAÇÃO, MEDIANTE DECLARAÇÃO ESCRITA DO INTERESSADO, QUE A TAL SE COMPROMETE;
+        \item[$\square$] DE ACORDO COM A LEGISLAÇÃO EM VIGOR, NÃO É PERMITIDA A REPRODU\-ÇÃO DE QUALQUER PARTE DESTA DISSERTAÇÃO/TRABALHO\\[2mm]
+    \end{itemize}
+    \end{spacing}
+    \noindent Instituto Politécnico do Cávado e do Ave, \underline{\hspace{4mm}}/\underline{\hspace{4mm}}/\underline{\hspace{8mm}}\\[6mm]
+    \noindent Assinatura: \underline{\hspace{8cm}}
+}
+
+\addto\captionsenglish{\renewcommand{\contentsname}{CONTENTS}}
+
+\newenvironment{resumo}{
+\cleardoublepage
+    {\fontfamily{cmss}\selectfont
+    \noindent {\Large \bf \textsc{\@title}}\\[1mm]
+    \noindent {\Large \textsc{\subtitle}}\\[8mm]
+    {\large \textbf{RESUMO}}}
+
+    \setlength{\parskip}{2ex}
+    % entrada no indice sem numeracao
+    {\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{RESUMO}}
+}{
+    \ifthenelse{\isundefined{\@keywords}}{}{
+        \ifthenelse{\isundefined{\keywordsPage}}{
+            \\[7mm]
+            {\large\textbf{Palavras-Chave}}\\[4mm]
+            \@keywords
+        }{}
+    }
+    \vfill\newpage
+}
+
+
+\newenvironment{abstract}{
+\cleardoublepage
+    {\fontfamily{cmss}\selectfont
+    \noindent {\Large \bf \textsc{\@title}}\\[1mm]
+    \noindent {\Large \textsc{\subtitle}}\\[8mm]
+    {\large \textbf{ABSTRACT}}}
+
+    \setlength{\parskip}{2ex}
+    % entrada no indice sem numeracao
+    {\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{ABSTRACT}}
+}{
+    \ifthenelse{\isundefined{\@keywords}}{}{
+        \ifthenelse{\isundefined{\keywordsPage}}{
+            \\[7mm]
+            {\large\textbf{Keywords}}\\[4mm]
+            \@keywords
+        }{}
+    }
+    \vfill\newpage
+}
+
+\newenvironment{acknowledgments}{
+\cleardoublepage
+    {\fontfamily{cmss}\selectfont
+    {\large \textbf{ACKNOWLEDGEMENTS}}}
+
+    \setlength{\parskip}{2ex}
+    % entrada no indice sem numeracao
+    {\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{ACKNOWLEDGEMENTS}}
+}{
+    \vfill\newpage
+}
+
+\usepackage{titlesec}
+
+\titleformat{\chapter}{\fontfamily{cmss}\selectfont\bfseries\huge}{\thechapter.}{20pt}{\fontfamily{cmss}\selectfont\huge\bfseries}
+\titleformat*{\section}{\LARGE\fontfamily{cmss}\selectfont\bfseries}
+\titleformat*{\subsection}{\Large\fontfamily{cmss}\selectfont}
+
+\usepackage[acronym]{glossaries}
+
+
+\makeatother

@@ -1,0 +1,7 @@
+
+2020.05.19 - v0.02
+ - maketitle creates the first two pages
+ - possibility to define internship or project
+ - environments for 'resumo', 'abstract' and 'acknowledgements'
+ - added bibtex example
+ - added glossary example (see chapter 2)

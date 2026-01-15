@@ -1,0 +1,19 @@
+Error: memory error: out of bound pointer
+File: main.c
+Line: 21
+assembly.ll line: 575
+State: 1
+Stack: 
+	#000000575 in test3(139450548097024) at main.c:21
+	#100000617 in __user_main(1, 140676224389120) at main.c:33
+	#200000379 in __uClibc_main(140660621578240, 1, 140676224389120, 0, 0, 0, 0) at libc/misc/internals/__uClibc_main.c:401
+	#300000551 in main(1, 140676224389120)
+Info: 
+	address: (ReadLSB w64 N0:(Extract w32 0 (Mul w64 8
+                                         (SExt w64 (Select w32 (Eq 0 (Read w8 4 arr))
+                                                               3
+                                                               1)))) const_arr1)
+	example: 0
+	range: [0, 0]
+	next: object at 139424778293248 of size 1
+		MO6342[1] allocated at test3():  %5 = alloca i8, align 1

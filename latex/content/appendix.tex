@@ -1,0 +1,149 @@
+% \renewcommand{\thefigure}{\thesection.\arabic{figure}}
+% \renewcommand{\thetable}{\thesection.\arabic{table}}
+% \renewcommand{\thelstlisting}{\thesection.\arabic{lstlisting}}
+% \setcounter{figure}{0}
+% \setcounter{table}{0}
+% \setcounter{lstlisting}{0}
+
+% \chapter*{Appendix}
+% \addcontentsline{toc}{chapter}{Appendix} % Manually add to the table of contents
+
+% \chapter{Appendix A - KLEE examples}\label{appendix:klee}
+\chapter{KLEE EXAMPLES}\label{appendix:klee}
+
+\lstinputlisting[
+caption={Sample 1 - \lstinline$get_sign()$},
+label={lst:chap4_sample1_klee},
+language=c,
+escapechar=|,
+numbers=left,
+breaklines=true,
+upquote=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample1/klee_main}
+
+\lstinputlisting[
+caption={Sample 2 - Simple regular expression matching},
+label={lst:chap4_sample2_klee},
+language=c,
+escapechar=|,
+numbers=left,
+breaklines=true,
+upquote=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample2/klee_main}
+
+% \chapter{Appendix B - Owi examples}\label{appendix:owi}
+\chapter{OWI EXAMPLES}\label{appendix:owi}
+
+\lstinputlisting[
+caption={Solving polynomials \citep{owi_examples_c}},
+label={lst:owi_poly},
+language=c,
+numbers=left,
+breaklines=true,
+upquote=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/owi_poly.c}
+
+\lstinputlisting[
+caption={\centering Sample 3 - Owi maze path finding example\\ \citep{owi_examples_c}},
+label={lst:chap4_sample3_owi},
+language=c,
+numbers=left,
+escapechar={@},
+breaklines=true,
+upquote=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample3/owi_main}
+
+\lstinputlisting[
+caption={\centering Sample 5 - Owi primes example (using Frama-C's E-ACSL)\\ \citep{owi_examples_c}},
+label={lst:chap4_sample5_owi},
+escapechar={|},
+language=c,
+upquote=true,
+numbers=left,
+breaklines=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample5/owi_main}
+
+% \chapter{Appendix C - ADALogics examples}\label{appendix:adalogics}
+\chapter{ADALOGICS EXAMPLES}\label{appendix:adalogics}
+
+\lstinputlisting[
+caption={Sample 6 - Global Buffer Overflow \citep{ADALogicsKLEE}},
+label={lst:chap4_sample6_klee},
+escapechar=@,
+language=c,
+numbers=left,
+breaklines=true,
+upquote=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample6/klee_main}
+
+\noindent
+\begin{minipage}{\textwidth}
+\lstinputlisting[
+caption={Sample 7 - Stack-based Buffer Overflow \citep{ADALogicsKLEE}},
+label={lst:chap4_sample7_klee},
+escapechar=@,
+language=c,
+numbers=left,
+breaklines=true,
+upquote=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample7/klee_main}
+\end{minipage}
+
+\noindent
+\begin{minipage}{\textwidth}
+\lstinputlisting[
+caption={Sample 8 - Null-pointer dereference \citep{ADALogicsKLEE}},
+label={lst:chap4_sample8_klee},
+escapechar=@,
+language=c,
+numbers=left,
+breaklines=true,
+upquote=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample8/klee_main}
+\end{minipage}
+
+\noindent
+\begin{minipage}{\textwidth}
+\lstinputlisting[
+caption={Sample 9 - Use after \lstinline$free$ \citep{ADALogicsKLEE}},
+label={lst:chap4_sample9_klee},
+escapechar=@,
+language=c,
+numbers=left,
+breaklines=true,
+upquote=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample9/klee_main}
+\end{minipage}
+
+% \chapter{Appendix D - Owi library}
+\chapter{OWI LIBRARY}
+
+\lstinputlisting[
+caption={Owi library (`\lstinline$owi.h$')},
+label={lst:owi_library},
+language=c,
+numbers=left,
+escapechar={|},
+breaklines=true,
+upquote=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/owi_library}

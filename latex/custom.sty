@@ -1,0 +1,102 @@
+% \includegraphics{...}[H]
+\usepackage{float}  
+
+% don't break itemize
+\makeatletter 
+\newcommand\mynobreakpar{\vspace{\baselineskip}\par\nobreak\@afterheading}
+\makeatother
+
+% customize tables
+\usepackage{multirow}
+
+% referencing with or without capital case
+\usepackage[nameinlink,noabbrev]{cleveref}
+\makeatletter
+\lst@AddToHook{Init}{\def\@currentcounter{lstnumber}}%
+\makeatother
+
+% use of footnote inside table and/or tabular
+\usepackage{footnote}
+\makesavenoteenv{table}
+% \makesavenoteenv{tabular}
+
+% appendix management
+\usepackage[toc,page]{appendix}
+
+% biblatex
+% \usepackage[style=apa,backend=biber,sort=nyvt]{biblatex}
+% \addbibresource{biblio.bib}
+
+% custom float placement \FloatBarrier
+\usepackage{placeins}
+
+% increased carachter support (├,│,─, etc.)
+% add option to lstlistings
+% literate = {├}{{\textSFviii}}1 {─}{{\textSFx}}1 {└}{{\textSFii}}1 {│}{{\textSFxi}}1
+\usepackage{pmboxdraw}
+
+% proper way to write an underscore `_'
+\newcommand*{\myunderscore}{\symbol{95}}
+
+% BurntOrange
+\usepackage[dvipsnames]{xcolor}
+
+% equations
+\usepackage{amsmath}
+\usepackage{caption}
+
+% Make sure footnotes in tables are shown in the same page
+% \usepackage{tablefootnote}
+
+\DeclareCaptionType{mycapequ}[][List of Equations]
+\captionsetup[mycapequ]{
+    % format=plain,
+    labelformat=empty,
+    % labelsep=.\enspace,
+    % justification=justified,
+    % font=\@captionfont,
+    % labelfont=\@captionheadfont,
+    % textfont=\@captionfont\upshape,
+    name=Equation,
+}
+
+% code listing
+\lstdefinestyle{customstyle}{
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbersep=5pt,
+	numbers=left,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false, 
+    frame=single,
+    frameround=ttff,
+    tabsize=2,
+}
+
+\lstset{style=customstyle}
+
+%custom online citation for biblatex
+\DeclareCiteCommand{\onlinecite}
+  {\usebibmacro{prenote}}
+  {\ifentrytype{online}
+     {\footnote{\printnames{author}%
+      \setunit{\addspace}%
+      \printfield[textit]{title}%
+      \setunit{\addspace}%
+      \printtext[brackets]{\url{\thefield{url}}}}}
+     {\printnames{labelname}\space\printfield{year}}} % Fallback for other types
+  {\multicitedelim}
+  {\usebibmacro{postnote}}
+
+% Remove n.d. for online entries without date
+% \DeclareLabeldate[online]{%
+%   \field{date}
+%   \field{year}
+%   \field{eventdate}
+%   \field{origdate}
+%   \field{urldate}
+% }

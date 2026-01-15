@@ -1,0 +1,47 @@
+typechecking ...
+typechecking ...
+linking      ...
+interpreting ...
+stack        : [  ]
+running instr: call 3
+calling func : func anonymous
+stack        : [  ]
+running instr: i32.const 0
+stack        : [ 0 ]
+running instr: i32.const 0
+stack        : [ 0 ; 0 ]
+running instr: call 2
+calling func : func anonymous
+stack        : [  ]
+running instr: call 1
+calling func : func anonymous
+stack        : [  ]
+running instr: i32.const 1
+stack        : [ 1 ]
+running instr: i32.const -1
+stack        : [ -1 ; 1 ]
+running instr: call 0
+stack        : [ symbol_0 ; -1 ; 1 ]
+running instr: local.tee 0
+stack        : [ symbol_0 ; -1 ; 1 ]
+running instr: i32.const -1
+stack        : [ -1 ; symbol_0 ; -1 ; 1 ]
+running instr: i32.gt_s
+stack        : [ (i32.of_bool (i32.gt symbol_0 -1)) ; -1 ; 1 ]
+running instr: select
+stack        : [ (bool.ite (i32.gt symbol_0 -1) 1 -1) ]
+running instr: i32.const 0
+stack        : [ 0 ; (bool.ite (i32.gt symbol_0 -1) 1 -1) ]
+running instr: local.get 0
+stack        : [ symbol_0 ; 0 ; (bool.ite (i32.gt symbol_0 -1) 1 -1) ]
+running instr: select
+stack        : [ (bool.ite (i32.to_bool symbol_0)
+                  (bool.ite (i32.gt symbol_0 -1) 1 -1) 0) ]
+stack        : [ (bool.ite (i32.to_bool symbol_0)
+                  (bool.ite (i32.gt symbol_0 -1) 1 -1) 0) ]
+stack        : [ (bool.ite (i32.to_bool symbol_0)
+                  (bool.ite (i32.gt symbol_0 -1) 1 -1) 0) ]
+running instr: drop
+stack        : [  ]
+stack        : [  ]
+All OK

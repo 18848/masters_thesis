@@ -1,0 +1,116 @@
+\documentclass[a4paper,12pt,twoside]{book}
+\usepackage{mei/mei}
+\usepackage{custom}
+% \overfullrule=1mm
+ 
+\propostaDissertacao
+% Estudo comparativo de ferramentas de execução simbólica para a deteção de vulnerabilidades
+% Comparative study of symbolic execution tools applied to vulnerability detection
+\title{Comparative study of \discretionary{}{symbolic}{symbolic} ex\-ecution tools \discretionary{}{applied}{applied} to vulnerability \discretionary{}{detection}{detection}}
+%\subtitle{SUB}
+\author{André Filipe Dias Cardoso}
+\email{a18848@alunos.ipca.pt}
+% \propostaDissertacaoEN         % ou \propostaProjeto
+% \MEIen
+\MEI
+% \date{\monthyeardate\today}
+\date{Janeiro, 2026}
+
+%% Caso tenham mais que um orientador, colocar
+%% \orientador{Nome professor \AND Nome professor}
+\orientador{Nuno Alberto Ferreira Lopes}
+% \coorientador{}
+
+% comentar se não for para usar glossários
+\makeglossaries
+\input{content/acronimos}
+
+\begin{document}
+\maketitle 
+\frontmatter
+
+\pagenumbering{Roman}
+
+%NL
+\onehalfspacing
+
+% Se o trabalho estiver em inglês, colocar primeiro o abstract
+% e depois o resumo em português. Caso contrário, inverter a ordem.
+\begin{abstract}
+    \input{content/chap0_abstract}
+\end{abstract}
+
+\begin{resumo}
+    \input{content/chap0_resumo}
+\end{resumo}
+
+%% Comment the following part if you are not acknowledging anybody
+\begin{acknowledgments}
+    \input{content/acknowledgment}
+\end{acknowledgments}
+
+\newpage\phantom{bla}
+% colocar antes do comentário uma palavra, recompilar, e remover a palavra, para acertar o índice
+\cleardoublepage %NL
+{\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{CONTENTS}}
+\tableofcontents
+
+% comentar se nao tiver figuraIs
+\cleardoublepage %NL
+{\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{LIST OF FIGURES}}
+\listoffigures
+
+% comentar se nao tiver tabelas
+\cleardoublepage %NL
+{\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{LIST OF TABLES}}
+\listoftables
+
+% comentar se nao tiver equações
+% \cleardoublepage %NL
+% {\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{List of Equations}}
+% \listofmycapequs
+
+% comentar se nao se quiser lista de listagens
+\cleardoublepage %NL
+{\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{LIST OF CODE LISTINGS}}
+\lstlistoflistings
+
+% Commentar proximas duas linhas se nao for para usar acronimos
+\cleardoublepage %NL
+{\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{ABBREVIATIONS \& ACRONYMS}}
+% \printglossary[type=\acronymtype,title={Siglas \& Acrónimos}]
+\printglossary[type=\acronymtype,title={ABBREVIATIONS \& ACRONYMS}]
+
+% Commentar proximas duas linhas se nao for para usar glossarios
+% \input{glossario}
+% \printglossary
+
+\mainmatter
+
+\input{content/chap1}
+\input{content/chap2}
+\input{content/chap3-1_klee}
+\input{content/chap3-2_owi}
+\input{content/chap3-3_feat_comp}
+\input{content/chap4}
+
+\input{content/conclusion}
+
+
+%\sloppy
+\cleardoublepage %NL
+{\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{BIBLIOGRAPHY}}
+\printbibliography[nottype=online,title={BIBLIOGRAPHY}]
+
+% \cleardoublepage %NL
+% {\csname phantomsection\endcsname\addcontentsline{toc}{chapter}{WEBGRAPHY}}
+% \printbibliography[type=online,title={WEBGRAPHY}]
+
+% bibtex <> biblatex
+% \bibliography{library}
+
+% comment if you don't have appendices
+\appendix
+\input{content/appendix}
+
+\end{document}  

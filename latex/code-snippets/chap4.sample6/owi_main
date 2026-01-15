@@ -1,0 +1,28 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+#include <owi.h>
+
+int global_arr[10] = {0, 1, 2, 3, 4, 5, 6, 7, 8, 9};
+int test1(char *buf)
+{
+	int i = 5;
+	if (strcmp(buf, "BUG!") == 0)@\label{line:4_6_strcmp}@
+	{
+		i += 20;
+	}
+	return global_arr[i];
+}
+
+int main(int argc, char const *argv[])
+{
+	char arr [10];@\label{line:4_6_owi_instrumentation_start}@
+	for (int i = 0; i < 10; i++) {
+		arr[i] = owi_char();
+	}@\label{line:4_6_owi_instrumentation_end}@
+	owi_assume(arr[9] == '\0');@\label{line:4_6_owi_assume}@
+	
+	test1(arr);
+
+	return 0;
+}

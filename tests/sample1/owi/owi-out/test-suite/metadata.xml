@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE test-metadata PUBLIC "+//IDN sosy-lab.org//DTD test-format test-metadata 1.1//EN" "https://sosy-lab.org/test-format/test-metadata-1.1.dtd">
+<test-metadata>
+  <sourcecodelang>
+    C
+  </sourcecodelang>
+  <producer>
+    owic
+  </producer>
+  <specification>
+    
+  </specification>
+  <programfile>
+    main.c
+  </programfile>
+  <programhash>
+    b663247b3afe5c791ac47c742b12981a92f3b3bdd9ddb8e43a2239f98e0cd555
+  </programhash>
+  <entryfunction>
+    main
+  </entryfunction>
+  <architecture>
+    32bit
+  </architecture>
+  <creationtime>
+    2024-11-23T16:19:31Z
+  </creationtime>
+</test-metadata>

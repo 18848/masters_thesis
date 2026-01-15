@@ -1,0 +1,41 @@
+KLEE: NOTE: Using klee-uclibc : /IPCA/Thesis/klee/install/klee/build/runtime/lib/klee-uclibc.bca
+KLEE: output directory is "/IPCA/Thesis/tests/sample5-primes_e-acsl/klee/klee-out-6"
+KLEE: Using STP solver backend
+KLEE: SAT solver: MiniSat
+KLEE: Deterministic allocator: Using quarantine queue size 8
+KLEE: Deterministic allocator: globals (start-address=0x7facfca36000 size=10 GiB)
+KLEE: Deterministic allocator: constants (start-address=0x7faa7ca36000 size=10 GiB)
+KLEE: Deterministic allocator: heap (start-address=0x7eaa7ca36000 size=1024 GiB)
+KLEE: Deterministic allocator: stack (start-address=0x7e8a7ca36000 size=128 GiB)
+KLEE: WARNING: undefined reference to function: __e_acsl_assert
+KLEE: WARNING: undefined reference to function: __e_acsl_assert_clean
+KLEE: WARNING: undefined reference to function: __e_acsl_assert_register_int
+KLEE: WARNING: undefined reference to function: __e_acsl_assert_register_long
+KLEE: WARNING: undefined reference to function: __e_acsl_assert_register_ptr
+KLEE: WARNING: undefined reference to function: __e_acsl_assert_register_ulong
+KLEE: WARNING: undefined reference to function: __e_acsl_delete_block
+KLEE: WARNING: undefined reference to function: __e_acsl_full_init
+KLEE: WARNING: undefined reference to function: __e_acsl_initialize
+KLEE: WARNING: undefined reference to function: __e_acsl_mark_readonly
+KLEE: WARNING: undefined reference to function: __e_acsl_memory_clean
+KLEE: WARNING: undefined reference to function: __e_acsl_memory_init
+KLEE: WARNING: undefined reference to function: __e_acsl_store_block
+KLEE: WARNING: undefined reference to function: __e_acsl_valid
+KLEE: WARNING: undefined reference to function: __e_acsl_valid_read
+KLEE: WARNING: undefined reference to function: __syscall_rt_sigaction
+KLEE: WARNING: undefined reference to function: fcntl
+KLEE: WARNING: undefined reference to function: fstat
+KLEE: WARNING: undefined reference to function: ioctl
+KLEE: WARNING: undefined reference to function: open
+KLEE: WARNING: undefined reference to function: write
+KLEE: WARNING: undefined reference to function: kill (UNSAFE)!
+KLEE: WARNING ONCE: calling external: ioctl(0, 21505, 139178358824960) at libc/termios/tcgetattr.c:43 12
+KLEE: WARNING ONCE: calling __user_main with extra arguments.
+KLEE: WARNING ONCE: calling external: __e_acsl_memory_init(0, 0, 8) at main.instrumented.c:696 3
+KLEE: ERROR: main.instrumented.c:695: failed external call: __e_acsl_memory_init
+KLEE: NOTE: now ignoring this error at this location
+
+KLEE: done: total instructions = 12101
+KLEE: done: completed paths = 0
+KLEE: done: partially completed paths = 1
+KLEE: done: generated tests = 1
