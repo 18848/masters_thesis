@@ -1,0 +1,8 @@
+Assert failure: (bool.ne
+                 (i32.mul
+                  (i32.add (i32.mul (i32.add symbol_0 -7) symbol_0) 14)
+                  symbol_0) 8)
+model {
+  symbol symbol_0 i32 4
+}
+Reached problem!%

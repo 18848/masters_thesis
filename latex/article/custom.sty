@@ -1,0 +1,62 @@
+
+% \usepackage{natbib}
+\usepackage[numbers,sort&compress]{natbib} % IEEEtran compatible
+
+\usepackage{hyperref}
+\hypersetup{
+    colorlinks,
+    linkcolor={blue!20!black},
+    citecolor={blue!20!black},
+    urlcolor={blue!20!black}
+}
+
+% referencing with or without capital case
+\usepackage[nameinlink,noabbrev]{cleveref}
+
+\usepackage[acronym]{glossaries}
+\usepackage{glossaries-extra}
+\setkeys{glslink}{hyper=false}
+
+\usepackage{caption}
+
+\DeclareCaptionType{mycapequ}[][List of Equations]
+\captionsetup[mycapequ]{
+    % format=plain,
+    labelformat=empty,
+    % labelsep=.\enspace,
+    % justification=justified,
+    % font=\@captionfont,
+    % labelfont=\@captionheadfont,
+    % textfont=\@captionfont\upshape,
+    name=Equation,
+}
+
+% code listing
+\usepackage{listings}
+\lstdefinestyle{customstyle}{
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,
+    breaklines=true,
+    captionpos=b,
+    keepspaces=true,
+    numbersep=5pt,
+	numbers=left,
+    showspaces=false,
+    showstringspaces=false,
+    showtabs=false, 
+    frame=single,
+    frameround=ttff,
+    tabsize=2,
+}
+
+\lstset{style=customstyle}
+
+% increased carachter support (├,│,─, etc.)
+% add option to lstlistings
+% literate = {├}{{\textSFviii}}1 {─}{{\textSFx}}1 {└}{{\textSFii}}1 {│}{{\textSFxi}}1
+\usepackage{pmboxdraw}
+
+% proper way to write an underscore `_'
+\newcommand*{\myunderscore}{\symbol{95}}
+
+\usepackage{bibentry} %{biblatex}\fullcite equivalent for natbib

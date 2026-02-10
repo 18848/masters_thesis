@@ -1,0 +1,49 @@
+\subsection{Feature Comparison}\label{section:feat_comp}
+
+Not only it is important to understand how well a tool performs, but also how flexible it can be in the different scenarios it may face. \Cref{tab:feature_comparison} was built describing each tool supported vulnerabilities, their ease-of-use, how easy they are to install, and which STP solvers they support. The tools' installation speed and complexity are scaled from 1-5 ranging from very slow to very fast or very hard to very easy, respectively. The third and fourth columns (Ease-of-use for beginner and experienced developers) take the same scale as the second one: 1-5, very hard to very easy.
+
+The tools' installation process is very different both in the amount of methods but also in the complexity of the provided solutions. Although the recomended solution by \citeauthor{klee_install} \cite{klee_install} is very complex since it requires a lot of dependencies and different processes, as we discussed in \cref{section:klee_install}, there is also available a quick start option using a docker image made available by the maintainers of KLEE. In contrast, Owi does not offer many ways to install its engine but both of them require the installation of \lstinline$opam$ but also \lstinline$dune$ if one compiles the source code directly. 
+
+With their differences in mind, KLEE punctuates a score of 5 in installation speed but if we disregard the Docker approach, both KLEE and Owi take 2 points; even though the first requires much more commands and dependencies, the second takes more time to actually compile the repository.
+
+When it comes to installation complexity, KLEE clearly could use some improvement in build automatization while Owi leverages this quite well with \lstinline$opam$ and \lstinline$dune$ however these are tools very tied with OCaml development which is not at all the focus of this study adding unnecessary complexity to the installation process. Considering this, KLEE scores a 1 in the recommended process. But if using Docker is an option, then it scores a 4. Owi on the other hand scores a 3, much because of the OCaml tools; we're intentionally ignoring the opam package since it did not produce a valid installation, otherwise Owi could score a 5.
+
+The tools usability is also scored in the perspective of both beginners and experienced developers. Because KLEE has so much documentation available across the internet the learning curve is very stable but the more advanced the requirements the more complex the usage may get due to how some functionalities are scattered across different \acrshort{cli}'s, these two points contribute for a solid positive score (4). Owi on the other hand can pose as a hard obstacle for the least experienced mainly due to the lack of support documents and the fact that OCaml doesn't make it into the top 50 of most popular programming languages where the 50th most popular language rates 0.15\%, according to \citeauthor{tiobe_index}\cite{tiobe_index}, scoring 2 points in this scenario. The popularity issues become nearly non-existent when an experienced mind makes use of the tool and the simplicity of having all tools aggregated into one \acrshort{cli} also contributes to a better score (4).
+
+The second section of \Cref{tab:feature_comparison} describes features and heuristics supported by each tool; heuristics refers to software vulnerabilities/errors, if they are supported by the tools and how these heuristics are defined. This is analysed in higher detail in \cref{chap:experiences}.
+
+The last section of \Cref{tab:feature_comparison} aggregates information from KLEE and Owi documentation on SAT and SMT solvers. While SAT solvers handle \textit{boolean satisfiability}, SMT expand on this concept into general formulas\cite{rbc_sat_solvers}. Examples of SMT solvers are STP and Z3 but there are also wrappers like MetaSMT and frontends as Smt.ml \cite{stp_solver,z3_solver,metaSMT,smtml}. MiniSat is a SAT solver used by STP as the underlying SAT solver and Smt.ml also has MiniSat in its support roadmap \cite{minisat,smtml}.
+
+% Features table
+\begin{table}[!ht]
+    \centering
+    \begin{tabular}{l|c|c}
+       \multicolumn{1}{c|}{\textit Feature} & \multicolumn{1}{c|}{KLEE} & \multicolumn{1}{c}{Owi} \\
+       \hline
+       \hline
+        Installation speed & 5 (2) & 2 \\
+        Installation complexity & 1 (4) & 3 \\
+        Ease-of-use (begginer) & 4 & 2 \\
+        Ease-of-use (experienced) & 4 & 4 \\
+        \hline
+        \hline
+        Heuristics support & Larger & Reduced \\
+        Heuristics definition & Hardcoded & Hardcoded \\
+        Supports E-ACSL & \textcolor{red}{NO} & \textcolor{green}{YES} \\
+        \hline
+        \hline
+        Supports MetaSMT & \textcolor{green}{YES} & \textcolor{red}{NO} \\
+        Supports STP & \textcolor{green}{YES} & \textcolor{red}{NO} \\
+        Supports Z3 & \textcolor{green}{YES} & \textcolor{green}{YES} \\
+        Supports metaSMT solvers & \textcolor{green}{YES} & \textcolor{red}{NO} \\
+        Supports Smt.ml solvers & \textcolor{red}{NO} & \textcolor{green}{YES} \\
+        Supports MiniSat & \textcolor{green}{YES} & \textcolor{red}{NO}\\
+    \end{tabular}
+    \caption{Feature comparison}
+    \label{tab:feature_comparison}
+\end{table}
+
+% \footnotetext[3]{`metaSMT is a wrapper around various SMT or SMT-like solvers.'\\\cite{metaSMT}}
+% \footnotetext[4]{`Smt.ml is a Multi Back-end Front-end for SMT Solvers in OCaml.'\\\cite{smtml}}
+% \footnotetext[5]{Supported as the underlying SAT solver for STP}
+% \footnotetext[6]{Support planned by the Smt.ml maintainers}

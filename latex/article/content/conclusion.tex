@@ -1,0 +1,41 @@
+\section{CONCLUSION}\label{chap:conclusion}
+
+The performed testing allowed us to establish how each tool compares in terms of speed, and CPU and memory usage. Not only that, but a quick glance of what each tool offers clearly demonstrates how Owi was designed as an extremely helpful toolkit for \acrshort{wasm} development, with all of the subcommands bundled, that enables developers to integrate symbolic execution into their \gls{sdlc} cycle.% and therefore increase their test coverage.
+
+KLEE, on the other hand, is purely designed to be a symbolic execution engine that proved itself by making use of a symbolic environment and developing a good solution on path explosion can improve the tool's efficiency.
+
+To take this research and method a step further a couple of improvements could be taken such as: testing in a dedicated test machine instead of the available alternative (laptop); increasing sample size both in number as in individually larger code samples, examples to this are the Test-Comp benchmarks; and lastly, increasing the number of tested symbolic execution tools.
+
+In conclusion, this work aims at making symbolic execution a familiar concept in the life of a software developer; despite the investigated tools being oriented to specific development platforms, the examined samples were not, proving we can still compile programs to an architecture that is not the intended for a `production environment' and have good testing mechanisms.
+
+\subsection{Research Questions}
+
+The defined \nameref{section:objectives} (\cref{section:objectives}) for this work were mostly answered in \cref{section:results} \nameref{section:results} with \Crefrange{tab:klee_accuracy}{tab:owi_performance} and \cref{equ:klee_youden_index,equ:owi_youden_index}. All performance questions are answered in \Cref{tab:klee_performance,tab:owi_performance} and the tools accuracy metrics are also tracked and calculated in \Cref{tab:klee_accuracy,tab:owi_accuracy}, and \cref{equ:klee_youden_index,equ:owi_youden_index}. Each topic was answered for both KLEE and Owi.
+
+The metrics collected helped conclude that KLEE was overall superior both in performance and in its bug-finding capabilities. Despite being superior at finding vulnerabilities, KLEE still scores poorly in the OWASP Benchmark scoring table (54\%) \cite{owasp_benchmark_scoring}, mainly due to its False Positive Rate, but the real culprit of this result is the size of the test sample.
+
+There are still, however, some unanswered questions:
+\begin{itemize}
+	\item \textbf{Complexity of the vulnerabilities detected}\\
+	To properly answer this question additional work is required; the samples analysed in \cref{chap:experiences} are of low complexity and therefore there isn't much room for complexity of vulnerabilities.
+	\item \textbf{Ability to find vulnerabilities out-of-the-box}\\
+	Neither tool seemed to be able to find bugs without tampering with the program sources, but that is mainly because of the very nature of symbolic execution and how the engine must know which variables are symbolic so it can travel execution paths and attempt to discover runtime problems.
+	However, if we only consider tool configurations, no extra argument or special execution of KLEE or Owi is required to find problems (once the sources are properly instrumented).
+	\item \textbf{Ability to find vulnerabilities with proper manipulation}\\
+	Similarly to the previous question, because of the very nature of symbolic execution, we're required to edit source files so the engines are able to do their jobs.
+	In terms of custom arguments for the tools, some arguments like KLEE's \lstinline$--uclibc$ and Owi's \lstinline$-w$ might help in achieving results by either providing additional context or providing concurrent scanning.
+	\item \textbf{Effort of tuning the tool}\\
+	Both utilities require source modifications but without major complexities, but KLEE functions are more ergonomical than Owi's.
+\end{itemize}
+
+In \cref{section:research_method} \nameref{section:research_method} some questions regarding performance and accuracy are expanded. Others are reiterated to reinforce lessons learned:
+
+\begin{itemize}
+	\item \textbf{Is the tool useless without proper tuning?} \\
+	Both KLEE and Owi require information on the scanned sources, without any information the testing will be very limited. However, this is not a limitation of the tools but of the analysis method.
+	\item \textbf{How does the Youden's Index compare?} \\
+	\Cref{equ:klee_youden_index,equ:owi_youden_index} show better results in favour of KLEE despite the small size of the test sample. According to \citeauthor{owasp_benchmark_scoring} \cite{owasp_benchmark_scoring}, KLEE's score of 54\% is considered as good as random guessing and Owi's 29\% mean nearly nothing is considered vulnerable code. Again, these results are a reflection of the small size of the test cases.
+\end{itemize}
+
+All these answers help answering the main research questions defined in \cref{section:objectives} \nameref{section:objectives}.
+KLEE is overall most effective at finding vulnerabilities and also the more efficient in terms of performance.

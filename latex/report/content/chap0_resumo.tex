@@ -1,0 +1,19 @@
+
+% para incluir palavras-chave no resumo
+\makeatletter
+\newcommand{\@keywords}{Execução Simbólica, Testes de Segurança Aplicacional, Análise Estática de Código, KLEE, Owi}
+% para definir palavras-chave manualmente, descomentar a linha seguinte
+% \newcommand{\keywordsPage}{}
+% para incluir as palavras-chave definidas, chamar o comando \@keywords
+% exemplo: Palavras-Chave: \@keywords
+\makeatother
+
+Com a rápida progressão do mundo, o \textit{software} é cada vez mais disperso por todas as áreas incluíndo áreas identificadas como tendo alto risco de ataques como os setores das finanças, saúde e banca.
+
+Numa tentativa de prevenção de ataques, o aplicativo de \textit{software} deve ser testado ao nível da segurança e a fiabilidade, o que é habitualmente conhecido por Testes de Segurança Aplicacional. Dois métodos comuns a este tipo de testes são normalmente descritos como dois lados de uma moeda: testes \textit{caixa-branca} e \textit{caixa-preta}, análise de código-fonte e fiabilidade de uma aplicação, mas os termos mais comuns são Testes de Segurança de Aplicações Estáticos e Testes de Segurança de Aplicações Dinâmicos.
+
+Olhando para técnicas dinâmicas, há exemplos como \textit{fuzzing} e análise dinâmica de `manchas' que requerem que a aplicação esteja em execução, mas são muito rápidos e com um rácio baixo de falsos positivos. No entanto, análise estática, com o exemplo da execução simbólica, é normalmente mais propícia a erros (falsos positivos) e demora consideravelmente mais tempo a executar em projetos de ampla escala.
+
+Alguns exemplos de motores de execução simbólica são o \acrlong{spf}, Jalangi2, SymJS, Cloud9 e Kite, mas aqueles que vamos discutir durante este documento são o KLEE e Owi. Vão ser analisadas algumas amostras de cógido usando ambas as ferramentas e extraídas métricas de cada análise simbólica que vão contribuir para uma comparação fundamentada das duas ferramentas.
+
+Este trabalho dedica-se a duas ferramentas de execução simbólica e ao seu estudo tentando compreender como se comparam, como assistem na proteção de código-fonte, e que alternativas estão disponíveis às equipas e indivíduos de desenvolvimento de \textit{software} que pretendam melhorar os seus testes de segurança sem impactos significativos no seu ciclo de desenvolvimento.

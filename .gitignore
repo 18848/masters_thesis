@@ -8,4 +8,5 @@
 **/owi/*.wasm
 **/owi/owi-out/*
 
-
+# latexmk aux files
+latex/**/.build/*

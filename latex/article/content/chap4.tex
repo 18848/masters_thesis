@@ -1,0 +1,942 @@
+\section{EXPERIENCES AND RESULTS}\label{chap:experiences}
+
+In this chapter, multiple experiences using both KLEE and Owi tools will be described and analysed. We will start by describing the test environment in \cref{section:test_environment}, and then proceed to describe each experience in its own section. Finally, a summary of all results and an overview of the experiences will be presented in \cref{section:results}.
+
+Each experience will showcase their capabilities and limitations. The samples 1 and 2 (\cref{section:sample_1,section:sample_2}) were extracted from KLEE's online documentation and samples 3 through 5 (\crefrange{section:sample_3}{section:sample_5}) from Owi's GitHub repository. Samples 6 through 9 (\crefrange{section:sample_6}{section:sample_9}) were recovered from \citeauthor{ADALogicsKLEE} \cite{ADALogicsKLEE} blog. All samples were adapted with necessary changes to ensure compatibility with both tools.
+
+\citeauthor{ADALogicsAboutUs} \cite{ADALogicsAboutUs} describe themselves as ``a world-class player in software security'' and as such they have many interactions in software security applications, such as symbolic execution. One of these interactions is a blog on KLEE where they go through the installation and usage of the tool to find bugs. On this blog, \citeauthor{ADALogicsKLEE} \cite{ADALogicsKLEE}
+ presents 4 videos to demonstrate KLEE set of features and in video 3 they discuss vulnerabilities of the types:
+
+\begin{itemize}
+    \item Global Buffer Overflow (\nameref{section:sample_6}),
+    \item Stack-based Buffer Overflow (\nameref{section:sample_7}),
+    \item NULL pointer dereference (\nameref{section:sample_8}),
+    \item Use after \lstinline$free$ (\nameref{section:sample_9}).
+\end{itemize}
+
+\Crefrange{section:sample_6}{section:sample_9} will cover these vulnerabilities using both KLEE and Owi by instrumenting each source in the intended way.
+
+\subsection{Test Environment}\label{section:test_environment}
+
+To increase the results' credibility, all tests were run on the same machine, therefore sharing the same resources. The specifications of such machine consisted in a 12th Gen Intel Core processor (i7-1255U) of 10 cores (and a total of 12 threads) with a max clock speed of 4.70 GHz, and 20 GB (4 + 16) of DDR4 3200 MHz RAM. 
+
+This is the parent system setup with a Windows 11 installation; however, the test environment was created in a WSL environment within this machine which shares 4 cores and 8 GB of RAM available.
+
+For simplicity of testing, all samples were organized by folders and subfolders: the parent folder aggregates by sample (1, 2, 3, etc.) and child folders aggregates files by tool, KLEE or Owi; a folder description is visible in \Cref{lst:samples_folder_structure_1,lst:samples_folder_structure_2}. 
+
+Each child folder (e.g., sample1/klee, sample1/owi) contains its own `main.c' file with the sample source code and will also contain any generated output by the tool. On KLEE runs, the \lstinline$klee-out-n$ (where \lstinline$n$ is the number of the run) and \lstinline$klee-last$ folders are created, and on Owi, the \lstinline$owi-out$. There are also the compiled objects \lstinline$main.bc$ and \lstinline$main.wasm$ files for targets LLVM and \acrshort{wasm} platforms, respectively.
+
+\noindent\begin{minipage}{\textwidth}
+\begin{lstlisting}[
+  boxpos=h,
+  caption={Samples folder structure (samples 1-5)},
+  label={lst:samples_folder_structure_1},
+  keywordstyle=\bfseries\color{blue},
+  keywords={sample1,sample2,sample3,sample4,sample5,sample6,sample7,sample8,sample9},
+  commentstyle=\bfseries\color{cyan},
+  moredelim={[is][\bfseries\color{cyan}]{|}{|}},
+  literate = {├}{{\textSFviii}}1 {─}{{\textSFx}}1 {└}{{\textSFii}}1 {│}{{\textSFxi}}1,
+]
+.
+├── sample1
+│  ├── |klee|
+│  └── |owi|
+├── sample2
+│  ├── |klee|
+│  └── |owi|
+├── sample3
+│  ├── |klee|
+│  └── |owi|
+├── sample4
+│  ├── |klee|
+│  └── |owi|
+├── sample5
+│  ├── |klee|
+│  └── |owi|
+...
+\end{lstlisting}
+\end{minipage}
+
+\noindent\begin{minipage}{\textwidth}
+\begin{lstlisting}[
+  boxpos=h,
+  caption={Samples folder structure (samples 6-9)},
+  label={lst:samples_folder_structure_2},
+  keywordstyle=\bfseries\color{blue},
+  keywords={sample1,sample2,sample3,sample4,sample5,sample6,sample7,sample8,sample9},
+  commentstyle=\bfseries\color{cyan},
+  moredelim={[is][\bfseries\color{cyan}]{|}{|}},
+  literate = {├}{{\textSFviii}}1 {─}{{\textSFx}}1 {└}{{\textSFii}}1 {│}{{\textSFxi}}1,
+]
+.
+│
+...
+├── sample6
+│  ├── |klee|
+│  └──|owi|
+├── sample7
+│  ├── |klee|
+│  └── |owi|
+├── sample8
+│  ├── |klee|
+│  └── |owi|
+└── sample9
+    ├── |klee|
+    └── |owi|
+\end{lstlisting}
+\end{minipage}
+
+  
+\begin{lstlisting}[
+caption={Sample file structure},
+label={lst:sample_file_structure},
+keywordstyle=\bfseries\color{blue},
+keywords={sample1},
+commentstyle=\bfseries\color{cyan},
+moredelim={[is][\bfseries\color{cyan}]{|}{|}},
+literate = {├}{{\textSFviii}}1 {─}{{\textSFx}}1 {└}{{\textSFii}}1 {│}{{\textSFxi}}1 {→}{{\textrightarrow}}1,
+]
+./sample1
+├── |klee|
+│  ├── |klee-last| -> |klee-out-0|
+│  ├── |klee-out-0|
+│  ├── klee-output.txt
+│  ├── klee-time.txt
+│  ├── main.bc
+│  └── main.c
+└── |owi|
+   ├── main.c
+   ├── main.wasm
+   ├── |owi-out|
+   ├── owi-output.txt
+   └── owi-time.txt
+\end{lstlisting}
+
+\subsection{Sample 1 - Dry-run}\label{section:sample_1}
+
+The first sample (see \Cref{lst:chap4_sample1_klee}) was extracted from the KLEE's online documentation tutorial one \cite{klee_tutorial1}. \Cref{lst:chap4_sample1_klee_intrumentation} shows how \lstinline$klee_make_symbolic$ is used to create a symbol from variable \lstinline$a$. Its arguments are explained in subsection \ref{subsection:klee_instrumentation}.
+
+To achieve a similar result with Owi, the sources must be adapted as shown in \Cref{lst:chap4_sample1_owi}. On \cref{var:4_1_owi_a} the variable definition is replaced by a declaration with assignment to the output of function \lstinline$owi_i32$; this routine is explained in greater detail in subsection \cref{subsection:owi_instrumentation}.
+
+Running this sample did not return any detected problem for either tool, but that was expected as this sample only serves as an introduction to the tool. Despite no results being found, this experience acts as a false positive test and both KLEE and Owi passed.
+
+\lstinputlisting[
+caption={Sample 1 instrumentation for KLEE},
+label={lst:chap4_sample1_klee_intrumentation},
+language=c,
+escapechar=|,
+numbers=left,
+breaklines=true,
+firstnumber=13,
+linerange={13-18},
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample1/klee_main}
+
+\begin{lstlisting}[
+caption={Sample 1 instrumented for Owi},
+label={lst:chap4_sample1_owi},
+language=c,
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+#include <owi.h>
+
+// ...|\setcounter{lstnumber}{11}|
+
+int main() {
+  int a = owi_i32();|\label{var:4_1_owi_a}|
+  return get_sign(a);
+}
+\end{lstlisting}
+
+\subsection{Sample 2 - Regular Expression Matcher}\label{section:sample_2}
+
+The second sample is also extracted from one of KLEE's tutorials, specifically the second one, where \citeauthor{klee_tutorial2} \cite{klee_tutorial2} introduces a handy argument to reduce unwanted noise and also describes error reports.
+
+If we run the source with instrumentation for KLEE (\Cref{lst:chap4_sample2_klee}) as advised in the \nameref{subsection:running_klee} subsection (\Cref{lst:klee_run_example}), 6'677 test cases are created; this order of results isn't bearable for a developer to analyse and check if it is a true or a false positive. This can be reduced to 16 generated tests, without losing code coverage, by adding the argument `\lstinline$--only-output-states-covering-new$' to the tool scan, which enables \lstinline$klee$ to skip states that do not cover new code.
+
+When it comes to Owi, after replacing the tutorial 2 source with Owi directives for symbolic values as in \Cref{lst:chap4_sample2_owi}, a difference between the test sources is noticeable. While KLEE is able to treat arrays as a single value, Owi requires the definition of each position one by one, making them all individual symbols. The library contains a definition for a function named \lstinline$owi_malloc$ that resembles the native \lstinline$malloc$, but its arguments are not explicit and the declarations in `\lstinline$owi.h$' library does not contain any explicit type of documentation or even a comment. 
+
+However, if we have a deeper look at the available library, see \Cref{lst:owi_library}, it is possible to find a pattern. On \crefrange{line:symbol_start}{line:symbol_end} (of \Cref{lst:owi_library}), the method declarations are paired with a line that seems to add more information to the methods. 
+
+\Cref{lst:owi_i8_decl} shows the example of \lstinline$owi_i8$ function, where before its declaration there are two instructions: `\lstinline$import_module("symbolic")$' and `\lstinline$import_name("i8_symbol")$', both contain name references to symbols (and therefore symbolic value types). Furthermore, on \crefrange{line:summaries_a_start}{line:summaries_a_end} and \crefrange{line:summaries_b_start}{line:summaries_b_end} (\Cref{lst:owi_library}) these same instructions are present but with different content (see `\lstinline$owi_malloc$' example on \Cref{lst:owi_malloc_decl}) which makes it compelling to believe that this function has a different responsibility than that of informing \lstinline$owi$ of symbolic values.
+% \textcolor{red}{TODO: Description of Owi run \cref{????}}
+\begin{lstlisting}[
+caption={Owi routine declaration - `\lstinline$owi_i8$'},
+label={lst:owi_i8_decl},
+boxpos=h,
+language=c,
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+__attribute__((import_module("symbolic"), import_name("i8_symbol"))) char
+owi_i8(void);
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption={Owi routine declaration - `\lstinline$owi_malloc$'},
+label={lst:owi_malloc_decl},
+boxpos=h,
+language=c,
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+__attribute__((import_module("summaries"), import_name("alloc"))) void *
+owi_malloc(void *, unsigned int);
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption={Sample 2 instrumented for Owi},
+label={lst:chap4_sample2_owi},
+boxpos=h,
+language=c,
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+// ...|\setcounter{lstnumber}{8}|
+
+#include <owi.h>
+
+// ...|\setcounter{lstnumber}{54}|
+
+int main()
+{
+	// The input regular expression.
+	char re[SIZE];
+
+	// Make the input symbolic.
+	for (int i = 0; i < 10; i++)
+	{
+		re[i] = owi_char();
+	}
+
+	// Try to match against a constant string "hello".
+	match(re, "hello");
+
+	return 0;
+}
+\end{lstlisting}
+
+\subsection{Sample 3 - Maze}\label{section:sample_3}
+
+Owi's GitHub repository \cite{owi_gh} also contains a directory with small examples to instruct users on how the tool subcommands work. For \lstinline$sym$\noindent subcommand, the only available example is not only written in \acrlong{wasm} text format, but it also is a very simple example not worth converting to \textit{C}. That being said, the \lstinline$c$ folder contains multiple examples of varying complexity. \Cref{section:sample_3} attempts to solve a maze, while \cref{section:sample_4,section:sample_5} will work on two different approaches showcasing one feature of \lstinline$owi c$.
+
+This sample demonstrates an algorithm that attempts to solve a simple maze. The example is very raw and direct, but the code could be adapted to a function that accepts an array of characters, each character representing a movement instruction, and returns a success indicator using an integer value, zero for success and any non-zero value for failure. A movement instruction is defined using lower-case characters for all directions: the character to move upwards is `\textit{w}', `\textit{s}' for downwards, and `\textit{a}' and `\textit{d}' for left and right movements.
+
+Running \lstinline$owi$ on the original sample (see \Cref{lst:chap4_sample3_owi}), returns one maze solution.  Looking at the test case in \Cref{lst:chap4_sample3_owi_output}, the generated information is outputted in a counter-intuitive sorting: \crefrange{line:maze_owi_output_start}{line:maze_owi_output_end} are formatted into 4 columns, a first describing stating the line refers to a symbol, a second with the symbol's name, another describing the symbol type, and lastly the symbol's value.
+
+\begin{lstlisting}[
+caption={Sample 3 - Owi output},
+label={lst:chap4_sample3_owi_output},
+boxpos={htbp},
+language=c,
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+Assert failure: false
+model {
+  symbol symbol_0 i8 115|\label{line:maze_owi_output_start}|
+  symbol symbol_1 i8 100
+  symbol symbol_10 i8 100
+  symbol symbol_11 i8 119
+  symbol symbol_12 i8 111
+  symbol symbol_13 i8 0
+  symbol symbol_14 i8 0
+  symbol symbol_15 i8 0
+  symbol symbol_16 i8 0
+  symbol symbol_17 i8 0
+  symbol symbol_18 i8 0
+  symbol symbol_19 i8 0
+  symbol symbol_2 i8 100
+  symbol symbol_20 i8 0
+  symbol symbol_21 i8 0
+  symbol symbol_22 i8 0
+  symbol symbol_23 i8 0
+  symbol symbol_24 i8 0
+  symbol symbol_25 i8 0
+  symbol symbol_26 i8 0
+  symbol symbol_27 i8 0
+  symbol symbol_3 i8 119
+  symbol symbol_4 i8 100
+  symbol symbol_5 i8 100
+  symbol symbol_6 i8 100
+  symbol symbol_7 i8 100
+  symbol symbol_8 i8 115
+  symbol symbol_9 i8 100|\label{line:maze_owi_output_end}|
+}
+Reached problem!
+\end{lstlisting}
+
+If we have a look at the second column of \crefrange{line:maze_owi_output_start}{line:maze_owi_output_end} (\Cref{lst:chap4_sample3_owi_output}), we notice an odd ordering of the columns: the expected output would be a sorting where, for names following the template `symbol\myunderscore\textit{n}' where \textit{n} is an index starting at 0, the output is sorted by \textit{n} in increasing order, starting from 0. However, the actual output seems to be sorted using some type of string sorting where strings of different sizes are compared character by character up to the last character of the smaller string, e.g., \textit{symbol\myunderscore1} is the same length as \textit{symbol\myunderscore2}, but both are smaller than \textit{symbol\myunderscore10}: \textit{symbol\myunderscore10} is equal to \textit{symbol\myunderscore1} but has a higher length and therefore comes after; \textit{symbol\myunderscore2} is greater than \textit{symbol\myunderscore1} \textbf{and} \textit{symbol\myunderscore10}, therefore it goes \textbf{after} \textit{symbol\myunderscore10}.
+
+On \cref{line:owi_char} of \Cref{lst:chap4_sample3_owi} we can see that each position of the char array was defined using the function \lstinline$owi_char$ which informs Owi of a new symbolic variable of the type \lstinline$char$. Despite this, the symbol's type seems to be interpreted to \lstinline$i8$ where the number `8' represents 8 bits of memory, or 1 byte, the same size as the type \lstinline$char$.
+
+Considering that the symbolic type of all symbols is defined as an integer type, their values will also be of integer type. Knowing this, and knowing that the instructions expected for the maze algorithm are one of \{\textit{w}, \textit{a}, \textit{s}, \textit{d}\}, the symbol integer values must be converted to their character equivalents using an ASCII table which are \{119, 97, 115, 100\}, respectively. There is an additional ASCII code (111 - `\textit{o}') that does not seem to be included in any of the expected inputs; this might be due to a faulty algorithm implementation, which is not the expected outcome of using Owi, but still an acceptable outcome. Another possible explanation is that the algorithm is correct and this unexpected input is an Owi bug.
+
+To test this algorithm using KLEE, the sources must be instrumented with the dedicated functions. \Cref{line:4_3_change_1,line:4_3_change_2,line:4_3_change_3} were updated to support KLEE, and one significant difference between Owi is \cref{line:4_3_change_2} where the iteration of one array, and initialization of all elements, was replaced by one instruction that takes the array address and its size, doing all computations and memory accesses correctly.
+
+\begin{lstlisting}[
+caption={Sample 3 instrumented for KLEE},
+label={lst:chap4_sample3_klee},
+language=c,
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+#include <klee/klee.h>|\label{line:4_3_change_1}|
+
+// ...|\setcounter{lstnumber}{17}|
+
+int main (void) {
+
+  int x = 1;
+  int y = 1;
+  maze[y][x]='X';
+
+  char program[ITERS];
+  klee_make_symbolic(|\&|program, sizeof program, "program");|\label{line:4_3_change_2}|
+
+  int old_x = x;
+  int old_y = y;
+
+  for (int i = 0; i < ITERS; i++) {
+    // ...|\setcounter{lstnumber}{51}|
+
+    if (maze[y][x] == '#') {
+      // TODO: print the result
+      klee_assert(0);|\label{line:4_3_change_3}|
+      return 0;
+    }
+
+    // ...|\setcounter{lstnumber}{68}|
+  }
+  return 1;
+}
+\end{lstlisting}
+
+Looking at the last lines of \textit{stdout} information generated by KLEE, \Cref{lst:chap4_sample3_klee_stdout}, some relevant data can be extracted: firstly, one error was detected and KLEE knows exactly where the bug occurred (`\verb$main.c:55$') and which type of failure it is (`\verb$ASSERTION FAIL: 0$'); this error will no longer be reported by any other path that may trigger this same error at this same location. Additionally, we're told 306 test cases were generated but only 305 completed paths were traced - the known bug that fails execution on \cref{line:4_3_change_3} of \Cref{lst:chap4_sample3_klee}.
+
+\begin{lstlisting}[
+caption={Sample 3 - KLEE stdout},
+label={lst:chap4_sample3_klee_stdout},
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+KLEE: ERROR: main.c:55: ASSERTION FAIL: 0
+KLEE: NOTE: now ignoring this error at this location
+
+KLEE: done: total instructions = 47849
+KLEE: done: completed paths = 305
+KLEE: done: partially completed paths = 4
+KLEE: done: generated tests = 306
+\end{lstlisting}
+
+If we examine the test case created for the detected BUG (\Cref{lst:chap4_sample3_ktest}), we notice on \cref{line:4_3_num_objects} that it matches the expected outcome of using only one symbol definition instruction \textit{versus} defining all array positions. On \crefrange{line:4_3_obj_name}{line:4_3_obj_text} the information for ``\textit{object 0}'' is displayed: this object is the first object declared in the program, but if this is not enough information to know what it refers to, we can always rely on \cref{line:4_3_obj_name} where the object's name is shown between single quotes. On \cref{line:4_3_obj_size} we're told the object size, and we know it matches the 28 positions of the array (\cref{line:4_3_owi_iters,line:4_3_owi_program} on \Cref{lst:chap4_sample3_owi}).
+
+\begin{lstlisting}[
+caption={Sample 3 - Display KLEE generated test case for detected bug using ktest-tool},
+label={lst:chap4_sample3_ktest},
+% upquote=true,
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+|\$| ktest-tool klee-last/test000113.ktest
+
+ktest file : 'klee-last/test000113.ktest'
+args       : ['main.bc']
+num objects: 1|\label{line:4_3_num_objects}|
+object 0: name: 'program'|\label{line:4_3_obj_name}|
+object 0: size: 28|\label{line:4_3_obj_size}|
+object 0: data: b'sddwddddsddw\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff\xff'
+object 0: hex : 0x736464776464646473646477ffffffffffffffffffffffffffffffff
+object 0: text: sddwddddsddw................|\label{line:4_3_obj_text}|
+\end{lstlisting}
+
+KLEE shows the variable values in five possible data types: a concrete object data as Python byte string, hexadecimal values in a string, signed and unsigned integer values, and text value. All of this information was extracted from the \lstinline$ktest-tool$ ``help page'', visible on \Cref{lst:chap4_sample3_ktest_help} , on which is also available that all non-printable characters are replaced by dots (`.') on text displays of the symbolic values.
+
+\begin{lstlisting}[
+caption={ktest-tool ``help page''},
+label={lst:chap4_sample3_ktest_help},
+% upquote=true,
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+|\$| ktest-tool --help
+usage: ktest-tool [-h] [--trim-zeros] [--extract name] file [file ...]
+
+positional arguments:
+  file            a .ktest file
+
+options:
+  -h, --help      show this help message and exit
+  --trim-zeros    trim trailing zeros
+  --extract name  write binary value of object into file
+
+output description:
+  A .ktest file comprises a file header and a list of memory objects.
+  Each object holds concrete test data for a symbolic memory object.
+  As no type information is stored, ktest-tool outputs data in
+  different representations.
+
+  ktest file header:
+    ktest file: path to ktest file
+    args: program arguments
+    num objects: number of memory objects
+  memory object:
+    name: object name
+    size: object size
+    data: concrete object data as Python byte string
+    hex: data as hex string
+    int: data as integer if size is 1, 2, 4, 8 bytes
+    uint: data as unsigned integer if size is 1, 2, 4, 8 bytes
+    text: data as ascii text, '.' for non-printable characters
+
+example:
+  > ktest-tool klee-last/test000003.ktest
+  ktest file : 'klee-last/test000003.ktest'
+  args       : ['get_sign.bc']
+  num objects: 1
+  object 0: name: 'a'
+  object 0: size: 4
+  object 0: data: b'\x00\x00\x00\x80'
+  object 0: hex : 0x00000080
+  object 0: int : -2147483648
+  object 0: uint: 2147483648
+  object 0: text: ....
+\end{lstlisting}
+
+\subsection{Sample 4 - Prime numbers}\label{section:sample_4}
+
+In this section, we analyse a sample based on \Cref{lst:chap4_sample5_owi} where we remove \crefrange{line:4_5_owi_eacsl_start}{line:4_5_owi_eacsl_end} resulting in \Cref{lst:chap4_sample4_owi}. This is done to simplify the source code and focus on the symbolic execution capabilities of both tools.
+
+Owi's instrumentation is focused only in defining the variable `\textit{n}' as a symbolic variable and constraining the expected values to be in the interval \lstinline$[2, MAX_SIZE]$ where \lstinline$MAX_SIZE$ is known to be constant and set to 100 (\cref{line:4_4_max_size} in \Cref{lst:chap4_sample4_owi}). KLEE does the same instrumentation, but naturally using its own functions, in \Cref{lst:chap4_sample4_klee} (\cref{line:4_4_include,line:4_4_symbol,line:4_4_assume_a,line:4_4_assume_b}).
+
+Both Owi and KLEE return no results, which in this case contributes to the false positives' evaluation - both tools passed this test.
+
+\lstinputlisting[
+caption={Sample 4 instrumented for Owi},
+label={lst:chap4_sample4_owi},
+escapechar=@,
+language=c,
+numbers=left,
+breaklines=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample4/owi_main}
+\lstinputlisting[
+caption={Sample 4 instrumented for KLEE},
+label={lst:chap4_sample4_klee},
+escapechar={|},
+language=c,
+numbers=left,
+breaklines=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample4/klee_main}
+
+\subsection{Sample 5 - Prime numbers (Frama-C's E-ACSL)}\label{section:sample_5}
+
+This section will work with \Cref{lst:chap4_sample5_owi} without modifications. Owi makes use of this example to introduce its integration with the Frama-C's E-ACSL plugin which is stated to automatically translate `an annotated C program into another program that detects the violated annotations at runtime' \cite{framac_eacsl}. This feature can help developers prevent bug introduction and/or regressions of business logic bugs, it does not help in detecting vulnerable code.
+
+\Cref{lst:chap4_sample5_owi} is annotated with E-ACSL instructions that will define conditions that the plugin will enforce both on input and output values. These annotations are contained in a block comment like so: \lstinline$/*@ ... */$. The keyword `\lstinline$requires$' is used define input value conditions, and `\lstinline$ensures$' is for output values. 
+
+\Crefrange{line:4_5_owi_eacsl_start}{line:4_5_owi_eacsl_end} in \Cref{lst:chap4_sample5_owi,lst:chap4_sample5_klee} (for Owi and KLEE, respectively), define how the function \lstinline$primes$ will only receive values for `\lstinline$n$' that are in the interval \lstinline$[2, MAX_SIZE]$ and values for `\lstinline$is_prime$' such that all memory locations are safe to read and write: assuming `\lstinline$x$' is the memory address pointed by \lstinline$is_prime$, the interval of addresses \lstinline$[x, x + (n - 1)]$ is safe to operate.
+
+Running owi on this sample returns the result on \Cref{lst:chap4_sample5_owi_output} defines clearly how the algorithm fails for \lstinline$n == 2$. By default, owi stops execution on the first detected problem, and in order to find multiple issues it must be passed the option `\lstinline$--deterministic-result-order$' which also guarantees that the results are found in a consistent order. With this new argument owi detects 99 problems, one for each value in the interval $[2, 100]$ (\lstinline$MAX_SIZE = 100$).
+
+The error detected by KLEE was the result of an insufficient compilation of the sources, and the outputted error was `\lstinline$failed external call: __e_acsl_memory_init$'. Even though this is not the expected outcome of the scan, it is a valid result since the program would fail in a concrete execution; however, we will consider this a False Positive since we did not want this result and the run did not execute as expected.
+
+\begin{lstlisting}[
+caption={Sample 5 - KLEE output},
+label={lst:chap4_sample5_klee_output},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+KLEE: ERROR: main.instrumented.c:695: failed external call: __e_acsl_memory_init
+KLEE: NOTE: now ignoring this error at this location
+
+KLEE: done: total instructions = 12021
+KLEE: done: completed paths = 0
+KLEE: done: partially completed paths = 1
+KLEE: done: generated tests = 1
+\end{lstlisting}
+
+\lstinputlisting[
+caption={Sample 5 instrumented for KLEE},
+label={lst:chap4_sample5_klee},
+escapechar=|,
+language=c,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample5/klee_main}
+
+\begin{lstlisting}[
+caption={Sample 5 - Owi output},
+label={lst:chap4_sample5_owi_output},
+% upquote=true,
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+Assert failure: false
+model {
+  symbol symbol_0 i32 2
+}
+Reached 1 problem!
+\end{lstlisting}
+
+\subsection{Sample 6 - Global Buffer Overflow}\label{section:sample_6}
+
+On this section, we will be covering an example of a Global Buffer Overflow vulnerability and how these problems can be detected using KLEE and Owi.
+
+On \Cref{lst:chap4_sample6_klee}, we can see how the \lstinline$test1$ input variable \lstinline$arr$ is safely marked as symbolic with \cref{line:4_6_klee_symbol,line:4_6_klee_assume}, using the KLEE instrumentation methods. \Cref{line:4_6_klee_assume} makes the array safe for string operations like `\lstinline$strcmp$' on \cref{line:4_6_klee_strcmp}.
+
+The second instrumentalization is done on \Cref{lst:chap4_sample6_owi}.
+Because the symbolic input is an array, each position must be initialized (see \crefrange{line:4_6_owi_instrumentation_start}{line:4_6_owi_instrumentation_end}) and because this is an array of character values (a string) we're telling Owi the string value is suffixed by `\textbackslash0' using \lstinline$owi_assume$ function and passing the condition \lstinline[upquote=true]+arr[9] == '\0'+ as its argument (\cref{line:4_6_owi_assume}). The string is `closed' so that it is safe for string operations, such as `\lstinline$strcmp$' on \cref{line:4_6_strcmp}, and it isn't reported as a problem.
+
+\lstinputlisting[
+caption={Sample 6 instrumented for Owi},
+label={lst:chap4_sample6_owi},
+language=c,
+% upquote=true,
+numbers=left,
+escapechar={@},
+breaklines=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample6/owi_main}
+
+Starting with klee execution, the results are found very quickly and only 6 paths are traced, one of which is partial and an error detection. \Cref{lst:chap4_sample6_klee_output} also shows on \cref{line:4_6_klee_error} the type of error (``\lstinline$memory error: out of bound pointer$'') and on which file and line the error occurred (``\lstinline$main.c:14$''). All unique errors generate a test case of its own and the one detected for this sample is expressed in detail on \Cref{lst:chap4_sample6_klee_test}.
+
+On the other hand, owi displays ``\lstinline$All OK$'' after scanning the sources stating it did not find the vulnerability.
+
+\begin{lstlisting}[
+caption={Sample 6 - KLEE output},
+label={lst:chap4_sample6_klee_output},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+KLEE: ERROR: main.c:14: memory error: out of bound pointer@\label{line:4_6_klee_error}@
+KLEE: NOTE: now ignoring this error at this location
+
+KLEE: done: total instructions = 12493
+KLEE: done: completed paths = 5
+KLEE: done: partially completed paths = 1
+KLEE: done: generated tests = 6
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption={Sample 6 - KLEE test case for the detected error},
+label={lst:chap4_sample6_klee_test},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+ktest file : './sample6/klee/klee-last/test000003.ktest'
+args       : ['main.bc']
+num objects: 1
+object 0: name: 'arr'
+object 0: size: 10
+object 0: data: b'BUG!\x00\xff\xff\xff\xff\x00'
+object 0: hex : 0x4255472100ffffffff00
+object 0: text: BUG!......
+\end{lstlisting}
+
+\subsection{Sample 7 - Stack-based Buffer Overflow}\label{section:sample_7}
+
+Differently from \nameref{section:sample_6}, Stack-based Buffer Overflow vulnerabilities look at scoped and dynamically allocated variables like the ones on line 8 in both KLEE and Owi samples (\Cref{lst:chap4_sample7_klee,lst:chap4_sample7_owi}); the samples' instrumentation is identical to what is seen on \nameref{section:sample_6}.
+
+Running KLEE results in a very similar result to that seen on \cref{section:sample_6}, once again 6 generated tests, one of which triggered an execution error shown in detail on \Cref{lst:chap4_sample7_klee_test}. This time, the error occurs on \cref{line:4_7_error} of file main (\Cref{lst:chap4_sample7_klee}).
+Owi fails to find the vulnerability, again.
+
+\begin{lstlisting}[
+caption={Sample 7 - KLEE output},
+label={lst:chap4_sample7_klee_output},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+KLEE: NOTE: KLEE: ERROR: main.c:26: memory error: out of bound pointer
+now ignoring this error at this location
+
+KLEE: done: total instructions = 12566
+KLEE: done: completed paths = 5
+KLEE: done: partially completed paths = 1
+KLEE: done: generated tests = 6
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption={Sample 7 - KLEE test case for the detected error},
+label={lst:chap4_sample7_klee_test},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+ktest file : './sample7/klee/klee-last/test000003.ktest'
+args       : ['main.bc']
+num objects: 1
+object 0: name: 'arr'
+object 0: size: 10
+object 0: data: b'BUG!\x00\xff\xff\xff\xff\x00'
+object 0: hex : 0x4255472100ffffffff00
+object 0: text: BUG!......
+\end{lstlisting}
+
+\lstinputlisting[
+caption={Sample 7 - Owi instrumentation},
+label={lst:chap4_sample7_owi},
+language=c,
+% upquote=true,
+numbers=left,
+breaklines=true,
+showstringspaces=false,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample7/owi_main}
+
+\subsection{Sample 8 - NULL pointer dereference}\label{section:sample_8}
+
+To test NULL pointer dereference bugs, a small string array (`\lstinline$char *global_string[]$' on \cref{line:4_8_global_var}) is initialized and used in function `\lstinline$test3$' where on \cref{line:4_8_error} will trigger an error when the input is favorable.
+
+After the samples are instrumented, the tools are run and a pattern begins to show where KLEE detects the vulnerability but Owi does not. See \Cref{lst:chap4_sample8_klee,lst:chap4_sample8_owi} for KLEE and Owi instrumented samples, respectively, \Cref{lst:chap4_sample8_klee_output} for KLEE terminal output and \Cref{lst:chap4_sample8_klee_test} for the generated test case.
+
+\lstinputlisting[
+caption={Sample 8 - Owi instrumentation},
+label={lst:chap4_sample8_owi},
+escapechar=@,
+language=c,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample8/owi_main}
+
+\begin{lstlisting}[
+caption={Sample 8 - KLEE output},
+label={lst:chap4_sample8_klee_output},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+KLEE: ERROR: main.c:21: memory error: out of bound pointer
+KLEE: NOTE: now ignoring this error at this location
+
+KLEE: done: total instructions = 12549
+KLEE: done: completed paths = 5
+KLEE: done: partially completed paths = 1
+KLEE: done: generated tests = 6
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption={Sample 8 - KLEE test case for the detected error},
+label={lst:chap4_sample8_klee_test},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+ktest file : './sample8/klee/klee-last/test000003.ktest'
+args       : ['main.bc']
+num objects: 1
+object 0: name: 'arr'
+object 0: size: 10
+object 0: data: b'BUG!\x00\xff\xff\xff\xff\x00'
+object 0: hex : 0x4255472100ffffffff00
+object 0: text: BUG!......
+\end{lstlisting}
+
+\subsection{Sample 9 - Use after free}\label{section:sample_9}
+
+Finally, `Use after free' runtime errors can also become very hard to detect by the human eye when code complexity increases; `\lstinline$test4$' function presents a simple case of this vulnerability to showcase KLEE and Owi capabilities. \Cref{lst:chap4_sample9_klee,lst:chap4_sample9_owi} illustrate instrumented sources for each symbolic execution engine.
+
+KLEE detected the bug on \cref{line:4_9_error}, generated 6 tests, and distinguished the error from the ones on \cref{section:sample_6,section:sample_7,section:sample_8}. KLEE's output (\Cref{lst:chap4_sample9_klee_output}) shows that the memory error is of type `\lstinline$double free$' on \cref{line:4_9_double_free}, and the generated test case (\Cref{lst:chap4_sample9_klee_test}) shows the expected input value.
+
+\begin{lstlisting}[
+caption={Sample 9 - KLEE output},
+label={lst:chap4_sample9_klee_output},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+KLEE: ERROR: main.c:14: memory error: double free@\label{line:4_9_double_free}@
+KLEE: NOTE: now ignoring this error at this location
+
+KLEE: done: total instructions = 12484
+KLEE: done: completed paths = 5
+KLEE: done: partially completed paths = 1
+KLEE: done: generated tests = 6
+\end{lstlisting}
+
+\begin{lstlisting}[
+caption={Sample 9 - KLEE test case for the detected error},
+label={lst:chap4_sample9_klee_test},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+ktest file : './sample9/klee/klee-last/test000003.ktest'
+args       : ['main.bc']
+num objects: 1
+object 0: name: 'arr'
+object 0: size: 10
+object 0: data: b'BUG!\x00\xff\xff\xff\xff\x00'
+object 0: hex : 0x4255472100ffffffff00
+object 0: text: BUG!......
+\end{lstlisting}
+
+While KLEE detected the double free as any other code issue, Owi reported the problem as an internal error and its respective stack trace as displayed in \Cref{lst:chap4_sample9_owi_output}. This behaviour suggests the tool does not properly support this issue and might cause the scan to miss other issues because of this internal error.
+
+\begin{lstlisting}[
+caption={Sample 9 - Owi output},
+label={lst:chap4_sample9_owi_output},
+% upquote=true,
+escapechar=@,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+owi: internal error, uncaught exception:
+     Failure("Memory leak double free")
+     Raised at Stdlib__Domain.join in file "domain.ml", line 296, characters 16-24
+     Called from Stdlib__Array.iter in file "array.ml", line 113, characters 31-48
+     Called from Owi__Wq.read_as_seq.(fun) in file "src/data_structures/wq.ml", line 17, characters 4-16
+     Called from Owi__Cmd_sym.cmd.print_and_count_failures in file "src/cmd/cmd_sym.ml", line 99, characters 10-20
+     Called from Owi__Cmd_sym.cmd in file "src/cmd/cmd_sym.ml", line 130, characters 15-49
+     Called from Cmdliner_term.app.(fun) in file "cmdliner_term.ml", line 24, characters 19-24
+     Called from Cmdliner_eval.run_parser in file "cmdliner_eval.ml", line 35, characters 37-44
+\end{lstlisting}
+
+% \noindent\begin{minipage}{\linewidth}
+\lstinputlisting[
+caption={Sample 9 - Owi instrumentation},
+label={lst:chap4_sample9_owi},
+language=c,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap4.sample9/owi_main}
+% \end{minipage}
+
+\subsection{Results}\label{section:results}
+
+Both KLEE and Owi require compiled sources, however Owi can abstract that process for the user if they are testing C source code. To avoid our statistics to include resources spent in source compilation, we will compile our sources for Owi using the same command they do in their abstraction. Please note that the comparisons in \Cref{tab:feature_comparison} - \nameref{tab:feature_comparison} take only symbolic execution features into consideration.
+
+This section discusses \textbf{Accuracy} and \textbf{Performance} metrics such as:
+
+\par\noindent\textbf{\textit{Accuracy Metrics}}
+\begin{itemize}
+    \item \textbf{TP - True Positives}\par Number of \textbf{expected} vulnerabilities \textbf{reported}.
+    \item \textbf{TN - True Negatives}\par Number of \textbf{unexpected} vulnerabilities \textbf{not reported}.
+    \item \textbf{FP - False Positives}\par Number of \textbf{unexpected} vulnerabilities \textbf{reported}.
+    \item \textbf{FN - False Negatives}\par Number of \textbf{expected} vulnerabilities \textbf{not reported}.
+    \item \textbf{Youden Index or Youden's J statistic}\par The accuracy metric used in OWASP Benchmark \cite{owasp_benchmark_scoring} is the following\\ 
+    \begin{minipage}{0.6\textwidth}
+    \raggedright
+    $
+      \begin{aligned}
+        J & = TPR - FPR \\\\
+          & = (\frac{TP}{TP+FN})\footnote{TPR - True Positive Rate} - (\frac{FP}{TN+FP})\footnote{FPR - False Positive Rate} \\ \\
+          & = \frac{TP*TN-FP*FN}{(TP+FN)(TN+FP)} \\
+      \end{aligned}
+    $
+    \end{minipage}
+\end{itemize}
+\par\noindent\textbf{\textit{Performance Metrics}}
+\begin{itemize}
+    \item \textbf{Paths traced}\par Branches of execution created to navigate.
+    \item \textbf{CPU (\%)}\par The CPU used by the process, in percentage.
+    \item \textbf{Memory (KB)}\par The `maximum resident set size' (very similar to peak memory) used by the process, in kilobytes.
+    \item \textbf{Time (s)}\par The execution time of the process, in seconds.
+\end{itemize}
+
+Accuracy metrics were extracted by manually inspecting each scan output, and performance metrics such as CPU, memory and time of execution were measured using the GNU \lstinline$time$ program (see \Cref{lst:time_command}). ``\textbf{Paths traced}'' was also extracted manually similarly to accuracy metrics. There is also the ``\textbf{Success}'' metric that indicates whether the sample was successfully analysed by the test tool, without regard for results.
+
+\begin{lstlisting}[
+boxpos=ht,
+caption={Extraction of performance metrics},
+label={lst:time_command},
+]
+# to avoid confusion with bash keyword 'time'
+# use the full path given to you by `which time`
+
+time -v klee main.bc
+
+time -v owi sym main.wasm   
+\end{lstlisting}
+
+%%%% ACCURACY
+
+After executing both engines on all test samples and extracting the results from each of them, \Cref{tab:klee_accuracy,tab:owi_accuracy} we're created. With these metrics properly formatted, calculating the ``\textbf{Youden Index}'' for both tools is easier, higher is better.
+
+It is apparent how KLEE detected much more vulnerabilities than Owi, which plays in its favour, and the calculations on \cref{equ:klee_youden_index,equ:owi_youden_index} reflect this statement, KLEE scores approximately 54\% while Owi stands on 29\% of bug detection accuracy.
+
+If we look at the Youden Index interpretation guide from OWASP Benchmark \cite{owasp_benchmark_scoring}
+ shown in \Cref{fig:owasp_benchmark_scoring}, we can see that KLEE scores highly (87.5\%) in the \textit{y} axis (TPR), while Owi scores poorly (28.5\%). Both tools score low on the \textit{x} axis (FPR), with KLEE at 33.3\% and Owi at 0\%. This means that KLEE is very good at detecting vulnerabilities, but also has a higher rate of false positives, while Owi is not very good at detecting vulnerabilities, but has a low rate of false positives. A larger set of samples would be needed to draw more concrete conclusions.
+
+% KLEE tests table
+\begin{table}[htbp]
+\begin{minipage}{.49\textwidth}
+    \centering
+    \begin{tabular}{c|c|c|c|c|c}
+        \multicolumn{1}{c|}{Sample} & \multicolumn{1}{c}{Success} & \multicolumn{1}{c}{TP} & \multicolumn{1}{c}{TN} & \multicolumn{1}{c}{FP} & \multicolumn{1}{c}{FN} \\
+        \hline
+        \hline
+        1 & YES & 0 & 1 & 0 & 0 \\
+        2 & YES & 2 & 0 & 0 & 0 \\
+        3 & YES & 1 & 0 & 0 & 0 \\
+        4 & YES & 0 & 1 & 0 & 0 \\
+        5 & YES\rlap{\footnote{KLEE was able to run, but it wasn't able to make use of Frama-C's E-ACSL capabilities}} & 0 & 0 & 1 & 1 \\
+        6 & YES & 1 & 0 & 0 & 0 \\
+        7 & YES & 1 & 0 & 0 & 0 \\
+        8 & YES & 1 & 0 & 0 & 0 \\
+        9 & YES & 1 & 0 & 0 & 0 \\
+    \end{tabular}
+    \caption{KLEE accuracy metrics}
+    \label{tab:klee_accuracy}
+\end{minipage}
+\begin{minipage}{.49\textwidth}
+    \centering
+    \begin{tabular}{c|c|c|c|c|c}
+        \multicolumn{1}{c|}{Sample} & \multicolumn{1}{c}{Success} & \multicolumn{1}{c}{TP} & \multicolumn{1}{c}{TN} & \multicolumn{1}{c}{FP} & \multicolumn{1}{c}{FN} \\
+        \hline
+        \hline
+        1 & YES & 0 & 1 & 0 & 0 \\
+        2 & YES & 0 & 0 & 0 & 1 \\
+        3 & YES & 1 & 0 & 0 & 0 \\
+        4 & YES & 0 & 1 & 0 & 0 \\
+        5 & YES & 1 & 0 & 0 & 0 \\
+        6 & YES & 0 & 0 & 0 & 1 \\
+        7 & YES & 0 & 0 & 0 & 1 \\
+        8 & YES & 0 & 0 & 0 & 1 \\
+        9 & YES & 0 & 0 & 0 & 1 \\
+    \end{tabular}
+    \caption{Owi accuracy metrics}
+    \label{tab:owi_accuracy}
+\end{minipage}
+\end{table}
+
+\begin{mycapequ}[htbp]
+\begin{minipage}{.49\textwidth}
+    \centering
+    \begin{equation}
+      \begin{aligned}
+        J & = (\frac{7}{7+1})\footnote{TPR - True Positive Rate} - (\frac{1}{2+1})\footnote{FPR - False Positive Rate} \\
+          & \approx (0.875) - (0.333) \\
+          & \approx 0.54
+      \end{aligned}
+    \label{equ:klee_youden_index}
+    \end{equation}
+    \caption{KLEE Youden Index}
+\end{minipage}
+\begin{minipage}{.49\textwidth}
+    \centering
+    \begin{equation}
+      \begin{aligned}
+        J & = (\frac{2}{2+5})\footnote{TPR - True Positive Rate} - (\frac{0}{2+0})\footnote{FPR - False Positive Rate} \\
+          & \approx (0.285) - (0) \\
+          & \approx 0.29
+      \end{aligned}
+    \label{equ:owi_youden_index}
+    \end{equation}
+    \caption{Owi Youden Index}
+\end{minipage}
+\end{mycapequ}
+
+\newpage
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.7\textwidth]{images/benchmark_guide.png}
+    \caption{OWASP Benchmark Scoring Guide - Youden Index interpretation\textsuperscript{*}}
+    \label{fig:owasp_benchmark_scoring}
+    \textsuperscript{*}\footnotesize{\bibentry{owasp_benchmark_scoring}}
+\end{figure}
+
+%%%% PERFORMANCE
+
+By running KLEE and Owi on the same set of samples, some differences are visible in their outputs and in their performances (see \Cref{tab:klee_performance,tab:owi_performance}). KLEE was overall slower, with the only exception being the primes example, but was also the example that consumed less CPU but also Memory on all samples.
+
+Unfortunately, Owi does not seem to output information regarding the travelled states, even after looking at debug logs (which depict execution instructions, but nothing was found to support a number of traversed paths).
+
+An example of how the performance between these tools differ is with sample 3, a test where KLEE traces 306 paths. KLEE reported results consuming nearly half the CPU resources and approximately 73\% of the memory usage and 35\% of the time spent, that Owi required to run and return no results on the sample.
+
+Sample 2 shows an even greater difference; KLEE spends nearly half the CPU and 19\% of the memory usage when compared to Owi, and does that in 1\% of the time it took Owi to analyse the same source. This scenario might be a clear indicator of Owi limitations.
+
+\newpage
+% KLEE tests table
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{c|c|c|c|c|c}
+        Sample & Success & Paths traced & CPU (\%) & Memory (KB) & Time (s)\footnote{The best out of five runs} \\
+        \hline
+        \hline
+        1 & YES & 3 & 99 & 98'156 & 0.29 \\
+        2 & YES & 6'675 & 101 & 139'680 & 12.93 \\
+        3 & YES & 305 & 93 & 99'152 & 0.72 \\
+        4 & YES & 99 & 98 & 99'504 & 2.93 \\
+        5 & YES & 1 & 81 & 98'036 & 0.39 \\
+        6 & YES & 5 & 102 & 98'920 & 0.30 \\
+        7 & YES & 5 & 87 & 97'536 & 0.37 \\
+        8 & YES & 5 & 96 & 98'248 & 0.33 \\
+        9 & YES & 5 & 96 & 99'236 & 0.32 \\
+    \end{tabular}
+    \caption{KLEE performance metrics}
+    \label{tab:klee_performance}
+\end{table}
+
+% Owi tests table
+\begin{table}[htbp]
+    \centering
+    \begin{tabular}{c|c|c|c|c|c}
+        Sample & Success & Paths traced & CPU (\%) & Memory (KB) & Time (s)\footnotemark[10] \\
+        \hline
+        \hline
+        1 & YES & \textcolor{gray}{N/A} & 108 & 110'000 & 0.05 \\
+        2 & YES & \textcolor{gray}{N/A} & 200 & 725'892 & 901.51 \\
+        3 & YES & \textcolor{gray}{N/A} & 199 & 134'928 & 2.10 \\
+        4 & YES & \textcolor{gray}{N/A} & 204 & 145'676 & 9.90 \\
+        5 & YES & \textcolor{gray}{N/A} & 205 & 151'800 & 11.13 \\
+        6 & YES & \textcolor{gray}{N/A} & 116 & 120'172 & 0.06 \\
+        7 & YES & \textcolor{gray}{N/A} & 115 & 119'172 & 0.06 \\
+        8 & YES & \textcolor{gray}{N/A} & 118 & 118'220 & 0.05 \\
+        9 & YES & \textcolor{gray}{N/A} & 123 & 121'040 & 0.05 \\
+    \end{tabular}
+    \caption{Owi performance metrics}
+    \label{tab:owi_performance}
+\end{table}
+

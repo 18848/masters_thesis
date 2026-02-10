@@ -1,0 +1,248 @@
+\section{SYMBOLIC EXECUTION TOOLS}\label{chap:symbolic_execution_tools}
+
+There are a couple of tools available that perform symbolic execution in numerous ways with different focus and strengths. A good agglomerate of these tools is maintained in a GitHub repository owned by \citeauthor{Luckow2017} \cite{Luckow2017}. There we find symbolic execution tools focused on binaries and various programming languages like Java, JavaScript, or even Rust, but also portable platforms like \acrshort{wasm} and LLVM.
+
+This chapter focuses on the tools that were considered for this work, and the reasons behind the final choice (\cref{section:engines_availability}). Then, the chosen tools, KLEE and Owi, are described in more detail. For both tools, installation instructions, features, and usage examples are provided (\cref{section:klee,section:owi}, respectively). Finally, a comparison between both tools is presented in \cref{section:feat_comp}.
+
+\subsection{Engines Availability}\label{section:engines_availability}
+
+In the endeavour of searching for tools capable of symbolic execution many attempts to have a functional installation of the available alternatives were done, but not all were successfull.
+
+Despite of Cloud9 and Kite having their own websites \cite{cloud9,kite_web} both did not contain valid hyperlinks for either sources or a compiled binary of the software. On the other hand, for SymJS nothing more than a scientific document was found \cite{Li2014}.
+
+That leaves us to KLEE and Owi, a pair of tools with a large support of languages \cite{llvm,wasm_fermyon}, and \acrshort{spf} and Jalangi2, the two programming languages used to develop the WebGoat project maintained by \acrshort{owasp} \cite{webgoat,owasp_webgoat}. \acrshort{owasp} WebGoat project is an intentionally vulnerable application so developers interested in learning cybersecurity can use it to learn about vulnerabilities \cite{owasp_webgoat}.
+
+Despite the interest around \acrshort{owasp}'s WebGoat project and the availability of sources for both \acrshort{spf} and Jalangi2, getting each software to run on their own and consistently is a daunting task with not much documentation to go along and a steep learning curve.
+
+KLEE and Owi are both far better when it comes to the available documentation, and initial learning curve; the users are not bombarded with a codebase and a single `README' file, instead they have either multiple README's for each subcommand \cite{owi_gh} or a large number of papers and websites with tutorials, examples and information on the tool features \cite{Cadar2008,ADALogicsKLEE,klee_tutorial1,klee_tutorial2,klee_install}.
+
+ 
+Given the current software paradigm, where performance is important not only in the matter of software runtime but also when it comes to software development, maintenance, and portability, tools that apply to technologies such as LLVM and WASM are interesting research targets.
+Therefore, we are looking at KLEE and Owi, which propose solutions for each tech stack, respectively.
+
+\subsection{KLEE}\label{section:klee}
+
+KLEE explores the LLVM infrastructure rather successfully and with speed; however, this engine bottlenecks quite considerably when it is applied on larger scale projects. This is due to its space management, given how it tries to keep all relevant information about the current states. It is also unable to handle dynamically generated code, concurrent execution and struggles with modelling network and peripherals, although most peers share these weaknesses \cite{NSabinoSymbolicExecution}. The LLVM project supports many different languages like Haskell, Rust and Python, but our test cases will focus on C/C++ programs \cite{llvm}.
+.
+
+LLVM has been referenced a few times in this document, but a brief explanation is in order. LLVM is not an acronym, but the full name of the project. Despite the name, it has nothing to do with virtual machines. LLVM is ``a collection of modular and reusable compiler and toolchain technologies''. It is also praised for its versatility, flexibility, and reusability. For more information about LLVM, please refer to their website \cite{llvm}.
+
+\cite{Cadar2008} describe KLEE as being in both static and dynamic techniques of testing: every symbolic execution engine is static by definition, but KLEE becomes dynamic through its outside environment interaction features.
+
+% \vfill5
+\subsubsection{Installation}\label{section:klee_install}
+
+The KLEE \acrshort{cli} tool is available in many ways and one of the fastest ways to get started is through their Docker image, but they also publish to the Snap Store and many package managers. However, the KLEE authors recommend building from source.
+
+A manual installation is demanding immediately from the dependencies' installation - 16 packages are required to install KLEE, 2 of which are optional (to generate documentation), and 3 more are recommended for improved usability. All the required commands are available in the \Cref{lst:klee_dependencies}.
+
+\noindent % avoid overflow
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[
+boxpos={ht},
+caption={KLEE dependencies installation.},
+label={lst:klee_dependencies},
+]
+# graphviz/doxygen are optional (documentation generation)
+sudo apt-get install build-essential cmake curl file \
+    g++-multilib gcc-multilib git libcap-dev \
+    libgoogle-perftools-dev libncurses5-dev libsqlite3-dev \
+    libtcmalloc-minimal4 python3-pip unzip graphviz doxygen
+
+# additional features in `klee-stats'
+sudo apt-get install python3-tabulate
+
+# `lit' enables testing 
+# `wllvm' makes it easier to compile to LLVM bitcode
+sudo apt-get install pipx
+pipx install lit wllvm
+
+\end{lstlisting}
+\end{minipage}
+
+Base dependencies aside, KLEE still requires critical tools such as LLVM 13 and at least one constraint solver; KLEE was built on top of LLVM 13 and the STP solver tools, but also supports Z3. LLVM 13 and the STP solver can be installed by using the commands in \Cref{lst:klee_llvm_install,lst:klee_stp_dependencies,lst:klee_stp_install}.
+
+\begin{lstlisting}[
+boxpos={ht},
+caption={LLVM installation.},
+label={lst:klee_llvm_install},
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+# add LLVM repositories to `apt' package manager
+wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+
+# install LLVM packages
+sudo apt-get install clang-13 llvm-13 llvm-13-dev llvm-13-tools
+\end{lstlisting}
+
+\begin{lstlisting}[
+boxpos={ht},
+caption={STP dependencies installation.},
+label={lst:klee_stp_dependencies},
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+# STP dependencies
+sudo apt-get install cmake bison flex libboost-all-dev python perl zlib1g-dev minisat
+
+# clone MiniSAT
+git clone https://github.com/stp/minisat.git
+cd minisat
+
+# build
+mkdir build
+cd build
+cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ ../
+
+# install
+sudo make install
+\end{lstlisting}
+
+\noindent
+\begin{minipage}{\textwidth}
+\begin{lstlisting}[
+boxpos={ht},
+caption={STP installation.},
+label={lst:klee_stp_install},
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]
+# clone STP
+git clone https://github.com/stp/stp.git
+cd stp
+git checkout tags/2.3.3
+
+# build
+mkdir build
+cd build
+cmake ..
+make
+
+# install
+sudo make install
+
+# increase stack size to run KLEE on larger benchmarks
+ulimit -s unlimited
+\end{lstlisting}
+\end{minipage}
+
+\subsubsection{Features}
+
+KLEE is packaged with multiple \acrshort{cli}s (see \Cref{tab:klee_features}) that contribute to the user experience, but the main command that runs the symbolic execution engine is \lstinline{klee}. 
+
+\begin{table}[ht]
+    \centering
+    \begin{tabular}{r|l}
+    \multicolumn{1}{c|}{Command} & \multicolumn{1}{c}{Description} \\
+    \hline
+    \hline
+    \lstinline$kleaver$ & Operates on \lstinline$.kquery$ files. \\
+    \lstinline$klee-exec-tree$ & Takes \lstinline$klee$ tree output and displays a graphical representation or \\&statistics.\\
+    \lstinline$klee-replay$ & Takes one ktest from a file or multiple from a directory and runs them. \\
+    \lstinline$klee-stats$ & Takes \lstinline$klee$ stats output and processes it as instructed. \\
+    \lstinline$klee-zesti$ & \acrshort{zesti}\footnote{\acrfull{zesti}} like wrapper of KLEE. \\
+    \lstinline$ktest-gen$ & Generates test cases (a \lstinline$.ktest$ file) from concrete input. \\
+    \lstinline$ktest-randgen$ & Generates test cases (a \lstinline$.ktest$ file) from randomly generated input. \\
+    \lstinline$ktest-tool$ & Describes a \lstinline$.ktest$ file containing information on each input object. \\
+    \end{tabular}
+    \caption{KLEE commands.}
+    \label{tab:klee_features}
+\end{table}
+
+\subsubsection{Instrumentation}\label{subsection:klee_instrumentation}
+
+The KLEE web page contains a tutorials section to help get familiarized with the tool. These tutorials contain samples and instructions on how to properly set up a C/C++ source file, let's call it code instrumentation, and how to run and analyse the results. Their sources can be found in higher detail in appendix \ref{appendix:klee}.
+
+The first, and most basic example, shows how one can mark a variable as symbolic by using the \lstinline$klee_make_symbolic()$ function (see \Cref{lst:klee_instrumentation}). This function takes 3 arguments; the first two will define a memory range in which the variable information is stored, the third defines a human-readable object name that identifies the symbolic variable in the generated test case files (for the variable `\lstinline$a$' declared on \cref{var:klee_instrumentation_var_a} in \Cref{lst:klee_instrumentation}, this could be ``my variable''.):
+
+\begin{enumerate}
+    \item The variable memory address,
+    \item The variable memory size,
+    \item The variable name, a human-readable identifier.
+\end{enumerate}
+
+Running \lstinline$klee$ on the compiled LLVM bitcode did not return any error but does return a couple of other interesting details. On \cref{line:complete_paths,line:partial_paths,line:generated_tests} of the \Cref{lst:klee_instrumentation_output}, we have information on the number of completely and partially complete traced paths, and lastly the number of generated test cases. Every traced path has a corresponding test, but only detected errors generate error information and an error query; these two different informations will be covered later once we start looking at test examples on \cref{chap:experiences} \nameref{chap:experiences}.
+
+\lstinputlisting[
+% boxpos=ht,
+caption={Tutorial 1 \lstinline$klee$ output},
+label={lst:klee_instrumentation_output},
+escapechar=|,
+numbers=left,
+breaklines=true,
+postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+]{code-snippets/chap3/klee_instrumentation_output}
+
+% minipage maybe
+\noindent\begin{minipage}{\linewidth}
+\lstinputlisting[
+% boxpos=ht,
+language=C,
+caption={Tutorial 1 sample},
+label={lst:klee_instrumentation},
+escapechar=|,
+numbers=left,
+]{code-snippets/chap3/klee_instrumentation}
+\end{minipage}
+
+Another valuable feature, is the \lstinline$klee_prefer_cex()$ that tells KLEE to prefer a set of values when generating test cases; this allows the user to get readable results like ``aaaa'' instead of hexadecimal representation of character values such as ``\textbackslash xff\textbackslash xff\textbackslash xff\textbackslash xff''.
+
+\subsubsection{Running KLEE}\label{subsection:running_klee}
+
+% To properly analyse a program's execution using KLEE, there are some requirements in order for it to work as expected. KLEE needs to be told essential information about the software, like what variables are classified as inputs and even what interval of values they are known to be constrained. This is possible using the functions available in the KLEE library (\lstinline{#include <klee/klee.h>}) such as \lstinline{klee_make_symbolic()} and \lstinline{klee_assume()}.
+
+After instrumenting the source code with KLEE instructions, see \cref{subsection:klee_instrumentation}, the next step is compiling it to LLVM, and the easiest way to achieve that is using Clang (\Cref{lst:klee_clang}).
+
+\begin{lstlisting}[
+caption={Basic clang command},
+label={lst:klee_clang}
+]
+clang -emit-llvm -c main.c
+\end{lstlisting}
+
+When compiling programs that include the klee library, it may be needed to include the klee library, so Clang understands its instructions, which can be done like in \Cref{lst:klee_clang_with_lib}.
+
+\begin{lstlisting}[
+caption={Basic clang command with path to klee library},
+label={lst:klee_clang_with_lib}
+]
+clang -I $PATH_TO_KLEE_LIBRARY -emit-llvm -c main.c
+\end{lstlisting}
+
+However, the KLEE documentation recommends a more complete command to have access to a more complete set of functionality that klee provides, such as test replayability, and that command is available in \Cref{lst:clang-complete}.
+
+\begin{lstlisting}[
+caption={Complete clang command},
+label={lst:clang-complete}
+]
+clang -emit-llvm -c -g -O0 -Xclang -disable-O0-optnone main.c
+\end{lstlisting}
+
+The compilation command should return an object with extension `$.bc$' containing the LLVM representation of the program. This file is in the correct format for KLEE, and therefore we can now test it by running the command on \Cref{lst:klee_run_example}.
+
+\begin{lstlisting}[
+caption={Running klee on a program},
+label={lst:klee_run_example}
+]
+klee main.bc
+\end{lstlisting}
+
+Running KLEE on a program results in file outputs, the \lstinline$klee-out-n$ and \lstinline$klee-last$ folders are created. For \lstinline$klee-out-n$, \lstinline$n$ is the zero-indexed counter of the run, and \lstinline$klee-last$ is a symbolic link to the most recent run folder; by the second run of KLEE, \lstinline$klee-last$ points to \lstinline$klee-out-1$. The folders created by KLEE contain all the generated test cases, error reports, and other useful information about the execution. Each generated test case is stored in a file with extension `$.ktest$' and can be analysed using the \lstinline$ktest-tool$ command (see \Cref{lst:klee_ktest_tool}).
+
+\begin{lstlisting}[
+caption={Analyzing a ktest file},
+label={lst:klee_ktest_tool}
+]
+$ ktest-tool klee-last/test000001.ktest
+ktest file : 'klee/klee-last/test000001.ktest'
+args       : ['main.bc']
+num objects: 1
+object 0: name: 'my signed integer'
+object 0: size: 4
+object 0: data: b'\x00\x00\x00\x00'
+object 0: hex : 0x00000000
+object 0: int : 0
+object 0: uint: 0
+object 0: text: ....
+\end{lstlisting}
