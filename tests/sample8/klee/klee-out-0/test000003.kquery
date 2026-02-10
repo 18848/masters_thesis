@@ -1,8 +1,0 @@
-array arr[10] : w32 -> w8 = symbolic
-(query [(Eq 0 (Read w8 9 arr))
-         (Eq 66 (Read w8 0 arr))
-         (Eq 85 (Read w8 1 arr))
-         (Eq 71 (Read w8 2 arr))
-         (Eq 33 (Read w8 3 arr))
-         (Eq 0 (Read w8 4 arr))]
-        false)
