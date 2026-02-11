@@ -1,6 +1,6 @@
 \section{SYMBOLIC EXECUTION TOOLS}\label{chap:symbolic_execution_tools}
 
-There are a couple of tools available that perform symbolic execution in numerous ways with different focus and strengths. A good agglomerate of these tools is maintained in a GitHub repository owned by \citeauthor{Luckow2017} \cite{Luckow2017}. There we find symbolic execution tools focused on binaries and various programming languages like Java, JavaScript, or even Rust, but also portable platforms like \acrshort{wasm} and LLVM.
+There are a couple of tools available that perform symbolic execution in numerous ways with different focus and strengths. A good agglomerate of these tools is maintained in a GitHub repository owned by \citeauthor{Luckow2017} \cite{Luckow2017}. There we find symbolic execution tools focused on binaries and various programming languages like Java, JavaScript, or even Rust, but also portable platforms like \glsxtrshort{wasm} and LLVM.
 
 This chapter focuses on the tools that were considered for this work, and the reasons behind the final choice (\cref{section:engines_availability}). Then, the chosen tools, KLEE and Owi, are described in more detail. For both tools, installation instructions, features, and usage examples are provided (\cref{section:klee,section:owi}, respectively). Finally, a comparison between both tools is presented in \cref{section:feat_comp}.
 
@@ -10,9 +10,9 @@ In the endeavour of searching for tools capable of symbolic execution many attem
 
 Despite of Cloud9 and Kite having their own websites \cite{cloud9,kite_web} both did not contain valid hyperlinks for either sources or a compiled binary of the software. On the other hand, for SymJS nothing more than a scientific document was found \cite{Li2014}.
 
-That leaves us to KLEE and Owi, a pair of tools with a large support of languages \cite{llvm,wasm_fermyon}, and \acrshort{spf} and Jalangi2, the two programming languages used to develop the WebGoat project maintained by \acrshort{owasp} \cite{webgoat,owasp_webgoat}. \acrshort{owasp} WebGoat project is an intentionally vulnerable application so developers interested in learning cybersecurity can use it to learn about vulnerabilities \cite{owasp_webgoat}.
+That leaves us to KLEE and Owi, a pair of tools with a large support of languages \cite{llvm,wasm_fermyon}, and \glsxtrshort{spf} and Jalangi2, the two programming languages used to develop the WebGoat project maintained by \glsxtrshort{owasp} \cite{webgoat,owasp_webgoat}. \glsxtrshort{owasp} WebGoat project is an intentionally vulnerable application so developers interested in learning cybersecurity can use it to learn about vulnerabilities \cite{owasp_webgoat}.
 
-Despite the interest around \acrshort{owasp}'s WebGoat project and the availability of sources for both \acrshort{spf} and Jalangi2, getting each software to run on their own and consistently is a daunting task with not much documentation to go along and a steep learning curve.
+Despite the interest around \glsxtrshort{owasp}'s WebGoat project and the availability of sources for both \glsxtrshort{spf} and Jalangi2, getting each software to run on their own and consistently is a daunting task with not much documentation to go along and a steep learning curve.
 
 KLEE and Owi are both far better when it comes to the available documentation, and initial learning curve; the users are not bombarded with a codebase and a single `README' file, instead they have either multiple README's for each subcommand \cite{owi_gh} or a large number of papers and websites with tutorials, examples and information on the tool features \cite{Cadar2008,ADALogicsKLEE,klee_tutorial1,klee_tutorial2,klee_install}.
 
@@ -30,124 +30,126 @@ LLVM has been referenced a few times in this document, but a brief explanation i
 \cite{Cadar2008} describe KLEE as being in both static and dynamic techniques of testing: every symbolic execution engine is static by definition, but KLEE becomes dynamic through its outside environment interaction features.
 
 % \vfill5
-\subsubsection{Installation}\label{section:klee_install}
+% \subsubsection{Installation}\label{section:klee_install}
 
-The KLEE \acrshort{cli} tool is available in many ways and one of the fastest ways to get started is through their Docker image, but they also publish to the Snap Store and many package managers. However, the KLEE authors recommend building from source.
+% The KLEE \acrshort{cli} tool is available in many ways and one of the fastest ways to get started is through their Docker image, but they also publish to the Snap Store and many package managers. However, the KLEE authors recommend building from source.
 
-A manual installation is demanding immediately from the dependencies' installation - 16 packages are required to install KLEE, 2 of which are optional (to generate documentation), and 3 more are recommended for improved usability. All the required commands are available in the \Cref{lst:klee_dependencies}.
+% A manual installation is demanding immediately from the dependencies' installation - 16 packages are required to install KLEE, 2 of which are optional (to generate documentation), and 3 more are recommended for improved usability. All the required commands are available in the \Cref{lst:klee_dependencies}.
 
-\noindent % avoid overflow
-\begin{minipage}{\textwidth}
-\begin{lstlisting}[
-boxpos={ht},
-caption={KLEE dependencies installation.},
-label={lst:klee_dependencies},
-]
-# graphviz/doxygen are optional (documentation generation)
-sudo apt-get install build-essential cmake curl file \
-    g++-multilib gcc-multilib git libcap-dev \
-    libgoogle-perftools-dev libncurses5-dev libsqlite3-dev \
-    libtcmalloc-minimal4 python3-pip unzip graphviz doxygen
+% \noindent % avoid overflow
+% \begin{minipage}{\textwidth}
+% \begin{lstlisting}[
+% boxpos={ht},
+% caption={KLEE dependencies installation.},
+% label={lst:klee_dependencies},
+% ]
+% # graphviz/doxygen are optional (documentation generation)
+% sudo apt-get install build-essential cmake curl file \
+%     g++-multilib gcc-multilib git libcap-dev \
+%     libgoogle-perftools-dev libncurses5-dev libsqlite3-dev \
+%     libtcmalloc-minimal4 python3-pip unzip graphviz doxygen
 
-# additional features in `klee-stats'
-sudo apt-get install python3-tabulate
+% # additional features in `klee-stats'
+% sudo apt-get install python3-tabulate
 
-# `lit' enables testing 
-# `wllvm' makes it easier to compile to LLVM bitcode
-sudo apt-get install pipx
-pipx install lit wllvm
+% # `lit' enables testing 
+% # `wllvm' makes it easier to compile to LLVM bitcode
+% sudo apt-get install pipx
+% pipx install lit wllvm
 
-\end{lstlisting}
-\end{minipage}
+% \end{lstlisting}
+% \end{minipage}
 
-Base dependencies aside, KLEE still requires critical tools such as LLVM 13 and at least one constraint solver; KLEE was built on top of LLVM 13 and the STP solver tools, but also supports Z3. LLVM 13 and the STP solver can be installed by using the commands in \Cref{lst:klee_llvm_install,lst:klee_stp_dependencies,lst:klee_stp_install}.
+% Base dependencies aside, KLEE still requires critical tools such as LLVM 13 and at least one constraint solver; KLEE was built on top of LLVM 13 and the STP solver tools, but also supports Z3. LLVM 13 and the STP solver can be installed by using the commands in \Cref{lst:klee_llvm_install,lst:klee_stp_dependencies,lst:klee_stp_install}.
 
-\begin{lstlisting}[
-boxpos={ht},
-caption={LLVM installation.},
-label={lst:klee_llvm_install},
-breaklines=true,
-postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-]
-# add LLVM repositories to `apt' package manager
-wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
+% \begin{lstlisting}[
+% boxpos={ht},
+% caption={LLVM installation.},
+% label={lst:klee_llvm_install},
+% breaklines=true,
+% postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+% ]
+% # add LLVM repositories to `apt' package manager
+% wget -O - https://apt.llvm.org/llvm-snapshot.gpg.key | sudo apt-key add -
 
-# install LLVM packages
-sudo apt-get install clang-13 llvm-13 llvm-13-dev llvm-13-tools
-\end{lstlisting}
+% # install LLVM packages
+% sudo apt-get install clang-13 llvm-13 llvm-13-dev llvm-13-tools
+% \end{lstlisting}
 
-\begin{lstlisting}[
-boxpos={ht},
-caption={STP dependencies installation.},
-label={lst:klee_stp_dependencies},
-breaklines=true,
-postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-]
-# STP dependencies
-sudo apt-get install cmake bison flex libboost-all-dev python perl zlib1g-dev minisat
+% \begin{lstlisting}[
+% boxpos={ht},
+% caption={STP dependencies installation.},
+% label={lst:klee_stp_dependencies},
+% breaklines=true,
+% postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+% ]
+% # STP dependencies
+% sudo apt-get install cmake bison flex libboost-all-dev python perl zlib1g-dev minisat
 
-# clone MiniSAT
-git clone https://github.com/stp/minisat.git
-cd minisat
+% # clone MiniSAT
+% git clone https://github.com/stp/minisat.git
+% cd minisat
 
-# build
-mkdir build
-cd build
-cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ ../
+% # build
+% mkdir build
+% cd build
+% cmake -DCMAKE_INSTALL_PREFIX=/usr/local/ ../
 
-# install
-sudo make install
-\end{lstlisting}
+% # install
+% sudo make install
+% \end{lstlisting}
 
-\noindent
-\begin{minipage}{\textwidth}
-\begin{lstlisting}[
-boxpos={ht},
-caption={STP installation.},
-label={lst:klee_stp_install},
-breaklines=true,
-postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-]
-# clone STP
-git clone https://github.com/stp/stp.git
-cd stp
-git checkout tags/2.3.3
+% \noindent
+% \begin{minipage}{\textwidth}
+% \begin{lstlisting}[
+% boxpos={ht},
+% caption={STP installation.},
+% label={lst:klee_stp_install},
+% breaklines=true,
+% postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+% ]
+% # clone STP
+% git clone https://github.com/stp/stp.git
+% cd stp
+% git checkout tags/2.3.3
 
-# build
-mkdir build
-cd build
-cmake ..
-make
+% # build
+% mkdir build
+% cd build
+% cmake ..
+% make
 
-# install
-sudo make install
+% # install
+% sudo make install
 
-# increase stack size to run KLEE on larger benchmarks
-ulimit -s unlimited
-\end{lstlisting}
-\end{minipage}
+% # increase stack size to run KLEE on larger benchmarks
+% ulimit -s unlimited
+% \end{lstlisting}
+% \end{minipage}
 
 \subsubsection{Features}
 
-KLEE is packaged with multiple \acrshort{cli}s (see \Cref{tab:klee_features}) that contribute to the user experience, but the main command that runs the symbolic execution engine is \lstinline{klee}. 
+KLEE is packaged with multiple \glsxtrshort{cli}s (see \Cref{tab:klee_features}) that contribute to the user experience, but the main command that runs the symbolic execution engine is \lstinline{klee}. 
 
 \begin{table}[ht]
-    \centering
+    \begin{center}
     \begin{tabular}{r|l}
     \multicolumn{1}{c|}{Command} & \multicolumn{1}{c}{Description} \\
     \hline
     \hline
     \lstinline$kleaver$ & Operates on \lstinline$.kquery$ files. \\
-    \lstinline$klee-exec-tree$ & Takes \lstinline$klee$ tree output and displays a graphical representation or \\&statistics.\\
-    \lstinline$klee-replay$ & Takes one ktest from a file or multiple from a directory and runs them. \\
-    \lstinline$klee-stats$ & Takes \lstinline$klee$ stats output and processes it as instructed. \\
-    \lstinline$klee-zesti$ & \acrshort{zesti}\footnote{\acrfull{zesti}} like wrapper of KLEE. \\
-    \lstinline$ktest-gen$ & Generates test cases (a \lstinline$.ktest$ file) from concrete input. \\
-    \lstinline$ktest-randgen$ & Generates test cases (a \lstinline$.ktest$ file) from randomly generated input. \\
-    \lstinline$ktest-tool$ & Describes a \lstinline$.ktest$ file containing information on each input object. \\
+    \lstinline$klee-exec-tree$ & Takes \lstinline$klee$ tree output and displays a graphical \\&representation or statistics.\\
+    \lstinline$klee-replay$ & Takes one ktest from a file or multiple from a \\&directory and runs them. \\
+    \lstinline$klee-stats$ & Takes \lstinline$klee$ stats output and processes it as \\&instructed. \\
+    \lstinline$klee-zesti$ & \glsxtrshort{zesti}\textsuperscript{1} like wrapper of KLEE. \\
+    \lstinline$ktest-gen$ & Generates test cases (a \lstinline$.ktest$ file) from \\&concrete input. \\
+    \lstinline$ktest-randgen$ & Generates test cases (a \lstinline$.ktest$ file) from \\&randomly generated input. \\
+    \lstinline$ktest-tool$ & Describes a \lstinline$.ktest$ file containing information \\&on each input object. \\
+    \multicolumn{2}{l}{\textsuperscript{1}\glsxtrfull{zesti}}
     \end{tabular}
     \caption{KLEE commands.}
     \label{tab:klee_features}
+    \end{center}
 \end{table}
 
 \subsubsection{Instrumentation}\label{subsection:klee_instrumentation}
@@ -175,7 +177,7 @@ postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
 ]{code-snippets/chap3/klee_instrumentation_output}
 
 % minipage maybe
-\noindent\begin{minipage}{\linewidth}
+% \noindent\begin{minipage}{\linewidth}
 \lstinputlisting[
 % boxpos=ht,
 language=C,
@@ -184,7 +186,7 @@ label={lst:klee_instrumentation},
 escapechar=|,
 numbers=left,
 ]{code-snippets/chap3/klee_instrumentation}
-\end{minipage}
+% \end{minipage}
 
 Another valuable feature, is the \lstinline$klee_prefer_cex()$ that tells KLEE to prefer a set of values when generating test cases; this allows the user to get readable results like ``aaaa'' instead of hexadecimal representation of character values such as ``\textbackslash xff\textbackslash xff\textbackslash xff\textbackslash xff''.
 

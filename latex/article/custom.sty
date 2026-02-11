@@ -10,9 +10,6 @@
     urlcolor={blue!20!black}
 }
 
-% referencing with or without capital case
-\usepackage[nameinlink,noabbrev]{cleveref}
-
 \usepackage[acronym]{glossaries}
 \usepackage{glossaries-extra}
 \setkeys{glslink}{hyper=false}
@@ -47,9 +44,14 @@
     frame=single,
     frameround=ttff,
     tabsize=2,
+    xleftmargin=1em,
+    xrightmargin=1em,
 }
-
 \lstset{style=customstyle}
+
+% must be called AFTER \usepackage{listings}
+% referencing with or without capital case
+\usepackage[nameinlink,noabbrev]{cleveref}
 
 % increased carachter support (├,│,─, etc.)
 % add option to lstlistings
