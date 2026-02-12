@@ -2,7 +2,9 @@
 
 In this chapter, multiple experiences using both KLEE and Owi tools will be described and analysed. We will start by describing the test environment in \cref{section:test_environment}, and then proceed to describe each experience in its own section. Finally, a summary of all results and an overview of the experiences will be presented in \cref{section:results}.
 
-Each experience will showcase their capabilities and limitations. The samples 1 and 2 (\cref{section:sample_1,section:sample_2}) were extracted from KLEE's online documentation and samples 3 through 5 (\crefrange{section:sample_3}{section:sample_5}) from Owi's GitHub repository. Samples 6 through 9 (\crefrange{section:sample_6}{section:sample_9}) were recovered from \citeauthor{ADALogicsKLEE} \cite{ADALogicsKLEE} blog. All samples were adapted with necessary changes to ensure compatibility with both tools.
+Each experience will showcase their capabilities and limitations. 
+% The samples 1 and 2 (\cref{section:sample_1,section:sample_2}) were extracted from KLEE's online documentation and samples 3 through 5 (\crefrange{section:sample_3}{section:sample_5}) from Owi's GitHub repository. 
+% Samples 6 through 9 (\crefrange{section:sample_6}{section:sample_9}) were recovered from \citeauthor{ADALogicsKLEE} \cite{ADALogicsKLEE} blog. All samples were adapted with necessary changes to ensure compatibility with both tools.
 
 \citeauthor{ADALogicsAboutUs} \cite{ADALogicsAboutUs} describe themselves as ``a world-class player in software security'' and as such they have many interactions in software security applications, such as symbolic execution. One of these interactions is a blog on KLEE where they go through the installation and usage of the tool to find bugs. On this blog, \citeauthor{ADALogicsKLEE} \cite{ADALogicsKLEE}
  presents 4 videos to demonstrate KLEE set of features and in video 3 they discuss vulnerabilities of the types:
@@ -22,9 +24,9 @@ To increase the results' credibility, all tests were run on the same machine, th
 
 This is the parent system setup with a Windows 11 installation; however, the test environment was created in a WSL environment within this machine which shares 4 cores and 8 GB of RAM available.
 
-For simplicity of testing, all samples were organized by folders and subfolders: the parent folder aggregates by sample (1, 2, 3, etc.) and child folders aggregates files by tool, KLEE or Owi; a folder description is visible in \Cref{lst:samples_folder_structure_1,lst:samples_folder_structure_2}. 
+For simplicity of testing, all samples were organized by folders and subfolders: the parent folder aggregates by sample (1, 2, 3, etc.) and child folders aggregates files by tool, KLEE or Owi; a folder description is visible in \Cref{lst:samples_folder_structure_example}. 
 
-Each child folder (e.g., sample1/klee, sample1/owi) contains its own `main.c' file with the sample source code and will also contain any generated output by the tool. On KLEE runs, the \lstinline$klee-out-n$ (where \lstinline$n$ is the number of the run) and \lstinline$klee-last$ folders are created, and on Owi, the \lstinline$owi-out$. There are also the compiled objects \lstinline$main.bc$ and \lstinline$main.wasm$ files for targets LLVM and \acrshort{wasm} platforms, respectively.
+Each child folder (e.g., sample1/klee, sample1/owi) contains its own `main.c' file with the sample source code and will also contain any generated output by the tool. On KLEE runs, the \lstinline$klee-out-n$ (where \lstinline$n$ is the number of the run) and \lstinline$klee-last$ folders are created, and on Owi, the \lstinline$owi-out$. There are also the compiled objects \lstinline$main.bc$ and \lstinline$main.wasm$ files for targets LLVM and \glsxtrshort {wasm} platforms, respectively.
 % \noindent\begin{minipage}{\textwidth}
 \begin{lstlisting}[
   boxpos=h,
@@ -906,13 +908,12 @@ If we look at the Youden Index interpretation guide from OWASP Benchmark \cite{o
 % \end{minipage}
 \end{mycapequ}
 
-\newpage
+% \newpage
 \begin{figure}[htbp]
     \centering
-    \includegraphics[width=0.7\textwidth]{images/benchmark_guide.png}
-    \caption{OWASP Benchmark Scoring Guide - Youden Index interpretation\textsuperscript{*}}
+    \includegraphics[width=\linewidth]{images/benchmark_guide.png}
+    \caption{OWASP Benchmark Scoring Guide - Youden Index interpretation \cite{owasp_benchmark_scoring}}
     \label{fig:owasp_benchmark_scoring}
-    \textsuperscript{*}\footnotesize{\bibentry{owasp_benchmark_scoring}}
 \end{figure}
 
 %%%% PERFORMANCE
@@ -925,12 +926,12 @@ An example of how the performance between these tools differ is with sample 3, a
 
 Sample 2 shows an even greater difference; KLEE spends nearly half the CPU and 19\% of the memory usage when compared to Owi, and does that in 1\% of the time it took Owi to analyse the same source. This scenario might be a clear indicator of Owi limitations.
 
-\newpage
+% \newpage
 % KLEE tests table
 \begin{table}[htbp]
-    \centering
+    \begin{center}
     \begin{tabular}{c|c|c|c|c|c}
-        Sample & Success & Paths traced & CPU (\%) & Memory (KB) & Time (s)\footnote{The best out of five runs} \\
+        \#$^{\mathrm{a}}$ & Success & Paths traced & CPU \textsubscript{(\%)} & Memory \textsubscript{(KB)} & Time \textsubscript{(s)}$^{\mathrm{b}}$ \\
         \hline
         \hline
         1 & YES & 3 & 99 & 98'156 & 0.29 \\
@@ -944,14 +945,17 @@ Sample 2 shows an even greater difference; KLEE spends nearly half the CPU and 1
         9 & YES & 5 & 96 & 99'236 & 0.32 \\
     \end{tabular}
     \caption{KLEE performance metrics}
+    \end{center}
     \label{tab:klee_performance}
+$^{\mathrm{a}}$\footnotesize{Sample number} \\
+$^{\mathrm{b}}$\footnotesize{The best out of five runs}
 \end{table}
 
 % Owi tests table
 \begin{table}[htbp]
-    \centering
+    \begin{center}
     \begin{tabular}{c|c|c|c|c|c}
-        Sample & Success & Paths traced & CPU (\%) & Memory (KB) & Time (s)\footnotemark[10] \\
+        \#$^{\mathrm{a}}$ & Success & Paths traced & CPU \textsubscript{(\%)} & Memory \textsubscript{(KB)} & Time \textsubscript{(s)}$^{\mathrm{b}}$ \\
         \hline
         \hline
         1 & YES & \textcolor{gray}{N/A} & 108 & 110'000 & 0.05 \\
@@ -965,6 +969,9 @@ Sample 2 shows an even greater difference; KLEE spends nearly half the CPU and 1
         9 & YES & \textcolor{gray}{N/A} & 123 & 121'040 & 0.05 \\
     \end{tabular}
     \caption{Owi performance metrics}
+    \end{center}
     \label{tab:owi_performance}
+$^{\mathrm{a}}$\footnotesize{Sample number} \\
+$^{\mathrm{b}}$\footnotesize{The best out of five runs}
 \end{table}
 

@@ -156,7 +156,9 @@ KLEE is packaged with multiple \glsxtrshort{cli}s (see \Cref{tab:klee_features})
 
 The KLEE web page contains a tutorials section to help get familiarized with the tool. These tutorials contain samples and instructions on how to properly set up a C/C++ source file, let's call it code instrumentation, and how to run and analyse the results. Their sources can be found in higher detail in appendix \ref{appendix:klee}.
 
-The first, and most basic example, shows how one can mark a variable as symbolic by using the \lstinline$klee_make_symbolic()$ function (see \Cref{lst:klee_instrumentation}). This function takes 3 arguments; the first two will define a memory range in which the variable information is stored, the third defines a human-readable object name that identifies the symbolic variable in the generated test case files (for the variable `\lstinline$a$' declared on \cref{var:klee_instrumentation_var_a} in \Cref{lst:klee_instrumentation}, this could be ``my variable''.):
+The first, and most basic example, shows how one can mark a variable as symbolic by using the \lstinline$klee_make_symbolic()$ function 
+%(see \Cref{lst:klee_instrumentation}).
+This function takes 3 arguments; the first two will define a memory range in which the variable information is stored, the third defines a human-readable object name that identifies the symbolic variable in the generated test case files (for the variable `\lstinline$a$' declared on \cref{var:klee_instrumentation_var_a} in \Cref{lst:klee_instrumentation}, this could be ``my variable''.):
 
 \begin{enumerate}
     \item The variable memory address,
@@ -164,29 +166,29 @@ The first, and most basic example, shows how one can mark a variable as symbolic
     \item The variable name, a human-readable identifier.
 \end{enumerate}
 
-Running \lstinline$klee$ on the compiled LLVM bitcode did not return any error but does return a couple of other interesting details. On \cref{line:complete_paths,line:partial_paths,line:generated_tests} of the \Cref{lst:klee_instrumentation_output}, we have information on the number of completely and partially complete traced paths, and lastly the number of generated test cases. Every traced path has a corresponding test, but only detected errors generate error information and an error query; these two different informations will be covered later once we start looking at test examples on \cref{chap:experiences} \nameref{chap:experiences}.
+% Running \lstinline$klee$ on the compiled LLVM bitcode did not return any error but does return a couple of other interesting details. On \cref{line:complete_paths,line:partial_paths,line:generated_tests} of the \Cref{lst:klee_instrumentation_output}, we have information on the number of completely and partially complete traced paths, and lastly the number of generated test cases. Every traced path has a corresponding test, but only detected errors generate error information and an error query; these two different informations will be covered later once we start looking at test examples on \cref{chap:experiences}.% \nameref{chap:experiences}.
 
-\lstinputlisting[
-% boxpos=ht,
-caption={Tutorial 1 \lstinline$klee$ output},
-label={lst:klee_instrumentation_output},
-escapechar=|,
-numbers=left,
-breaklines=true,
-postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
-]{code-snippets/chap3/klee_instrumentation_output}
+% \lstinputlisting[
+% % boxpos=ht,
+% caption={Tutorial 1 \lstinline$klee$ output},
+% label={lst:klee_instrumentation_output},
+% escapechar=|,
+% numbers=left,
+% breaklines=true,
+% postbreak=\mbox{\textcolor{red}{$\hookrightarrow$}\space},
+% ]{code-snippets/chap3/klee_instrumentation_output}
 
-% minipage maybe
-% \noindent\begin{minipage}{\linewidth}
-\lstinputlisting[
-% boxpos=ht,
-language=C,
-caption={Tutorial 1 sample},
-label={lst:klee_instrumentation},
-escapechar=|,
-numbers=left,
-]{code-snippets/chap3/klee_instrumentation}
-% \end{minipage}
+% % minipage maybe
+% % \noindent\begin{minipage}{\linewidth}
+% \lstinputlisting[
+% % boxpos=ht,
+% language=C,
+% caption={Tutorial 1 sample},
+% label={lst:klee_instrumentation},
+% escapechar=|,
+% numbers=left,
+% ]{code-snippets/chap3/klee_instrumentation}
+% % \end{minipage}
 
 Another valuable feature, is the \lstinline$klee_prefer_cex()$ that tells KLEE to prefer a set of values when generating test cases; this allows the user to get readable results like ``aaaa'' instead of hexadecimal representation of character values such as ``\textbackslash xff\textbackslash xff\textbackslash xff\textbackslash xff''.
 

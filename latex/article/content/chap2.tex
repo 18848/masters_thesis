@@ -16,16 +16,22 @@ After looking at the research performed by \cite{SASTvsDAST}, a summarized versi
 
 \begin{table}[ht]
 \centering
-
-\begin{tabular}{cc}
+\begin{tabular}{c|c}
 \textbf{\glsxtrshort{sast}} & \textbf{\glsxtrshort{dast}}\\
 \hline
+\hline
 White-box testing  & Black-box testing \\
+\hline
 Test from the inside out  & Test from the outside in \\
+\hline
 Test internal behaviour  & Test external expectations \\
+\hline
 Validate code quality  & Validate system functionality \\
+\hline
 High granularity  & Low granularity \\
-Full knowledge of application structure & No knowledge of application structure \\
+\hline
+Full knowledge of & No knowledge of \\
+application structure & application structure \\
 
 \end{tabular}
 \caption{Summarized Theoretical Comparison of \glsxtrshort{sast} \& \glsxtrshort{dast}}
@@ -38,7 +44,10 @@ This theoretical comparison is presented with a more practical one, where \cite{
     \centering
     \caption{Youden's Index or Youden's J statistic}
     \begin{equation}
-        Youden index (Score) = TPR (True Positive Rate) - FPR (False Positive Rate)
+      \begin{aligned}
+        J &= TPR (True Positive Rate) - \\
+        &FPR (False Positive Rate)
+      \end{aligned}
     \label{equ:youden_index}
     \end{equation}
 \end{mycapequ}
@@ -46,17 +55,17 @@ This theoretical comparison is presented with a more practical one, where \cite{
 
 % \citeauthor{owasp-devsecops-dast} \cite{owasp-devsecops-dast} also describes \glsxtrshort{dast} as ``especially helpful for detecting: input or output validation, authentication issues, server configuration mistakes'' and specifies that they ``allow for sophisticated scans on the client side and server side'' and require no implementation information (source code, framework, etc.). 
 
-\subsubsection{Software Development Life Cycle}
+% \subsubsection{Software Development Life Cycle}
 
-An analysis of software security necessarily encompasses the entire development lifecycle, with particular emphasis on testing and deployment. Integrating specialized security testing within the validation phase is essential; however, the deployment phase remains equally critical, as it represents a high-risk transition point within the system's lifecycle \cite{SDLC}. Moreover, it is worth noting how the cost of remediating a risk increases the further down the life cycle it is detected and flagged when compared to those found earlier \cite{SAST_opensource}.
+% An analysis of software security necessarily encompasses the entire development lifecycle, with particular emphasis on testing and deployment. Integrating specialized security testing within the validation phase is essential; however, the deployment phase remains equally critical, as it represents a high-risk transition point within the system's lifecycle \cite{SDLC}. Moreover, it is worth noting how the cost of remediating a risk increases the further down the life cycle it is detected and flagged when compared to those found earlier \cite{SAST_opensource}.
 
-After a careful analysis of the two techniques to test application security, and a quick glance at \Cref{fig:SDLC}, what makes most sense for most organizations is to execute static security scans as part of the testing phase. If a more complete deployment is required for dynamic tests, then we could be looking at a later stage: deployment. This also depends greatly on how companies implement CI/CD; if they do it well enough, then the testing phase just became much more agile and dynamic, making it possible to secure software statically directly in the implementation phase and dynamically in the testing phase, detecting problems much earlier and reducing costs in overall risk management \cite{SASTvsDAST,Rangnau2020}.
-\begin{figure}[ht]
-    \centering
-    \includegraphics{images/sdlc.png}
-    \caption{Software Development Life Cycle Model \cite{SDLC}}
-    \label{fig:SDLC}
-\end{figure}
+% After a careful analysis of the two techniques to test application security, and a quick glance at \Cref{fig:SDLC}, what makes most sense for most organizations is to execute static security scans as part of the testing phase. If a more complete deployment is required for dynamic tests, then we could be looking at a later stage: deployment. This also depends greatly on how companies implement CI/CD; if they do it well enough, then the testing phase just became much more agile and dynamic, making it possible to secure software statically directly in the implementation phase and dynamically in the testing phase, detecting problems much earlier and reducing costs in overall risk management \cite{SASTvsDAST,Rangnau2020}.
+% \begin{figure}[ht]
+%     \centering
+%     \includegraphics{images/sdlc.png}
+%     \caption{Software Development Life Cycle Model \cite{SDLC}}
+%     \label{fig:SDLC}
+% \end{figure}
 
 \subsection{SAST - Static Application Security Testing}
 Expanding on the white-box technique, most vulnerabilities are due to developer's lack of awareness and/or bad programming practices \cite{SAST_opensource} in such a way that \citeauthor{owasp-devsecops-sast} \cite{owasp-devsecops-sast} defines it ``as part of a Code Review'', a ``method of computer program debugging that is done by examining the code without executing the program'', and also a good technic to help find:
@@ -82,7 +91,7 @@ Path explosion is one concern found in many high performance problems: the input
 \end{quote}
 
 Environment modelling is another very common problem in software analysis techniques given how much software development relies on third-party libraries today. This problem escalates whenever these dependencies are packaged as binaries, or the sources are `super-optimized', the paths exploration and consequently the constraint solving may fail which may result in false positives or false negatives \cite{Cadar2008}.
-\vfill
+% \vfill
 
 % \subsection{DAST - Dynamic Application Security Testing} 
 

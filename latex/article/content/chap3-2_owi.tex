@@ -50,17 +50,17 @@ owi replay --replay-file=main.model main.wat
     \multicolumn{1}{c|}{Subcommand} & \multicolumn{1}{c}{Description} \\
     \hline
     \hline
-    $c$ & Compiles C source code to \glsxtrshort{wasm} and runs the \glsxtrshort{wasm} \\&symbolic interpreter on the end result. \\
-    $conc$ & Takes \glsxtrshort{wasm} input and runs the concolic interpreter on it.\\
-    $fmt$ & Formats \glsxtrlong{wasm} text format files ($.wat$ or $.wast$).\\
+    $c$ & Compiles C source code to \glsxtrshort{wasm} and runs the \\&\glsxtrshort{wasm} symbolic interpreter on the end result. \\
+    $conc$ & Takes \glsxtrshort{wasm} input and runs the concolic interpreter \\&on it.\\
+    $fmt$ & Formats \glsxtrlong{wasm} text format files ($.wat$ or \\&$.wast$).\\
     $opt$ & Optimizes \glsxtrlong{wasm} modules.\\
     $run$ & Runs the concrete interpreter.\\
-    $replay$ & Replay a \glsxtrshort{wasm} module containing symbols with concrete \\&values in a replay file containing a model.\\
+    $replay$ & Replay a \glsxtrshort{wasm} module containing symbols with \\&concrete values in a replay file containing a model.\\
     $script$ & Runs a reference test suite script.\\
-    $sym$ & Takes \glsxtrshort{wasm} input and runs the symbolic interpreter on it.\\
+    $sym$ & Takes \glsxtrshort{wasm} input and runs the symbolic interpreter \\&on it.\\
     $validate$ & Validates \glsxtrlong{wasm} modules.\\
-    $wasm2wat$ & Generate a text format file ($.wat$) from a binary format \\&file ($.wasm$).\\
-    $wat2wasm$ & Generate a binary format file ($.wasm$) from a text format \\&file ($.wat$).\\
+    $wasm2wat$ & Generate a text format file ($.wat$) from a binary \\&format file ($.wasm$).\\
+    $wat2wasm$ & Generate a binary format file ($.wasm$) from a text \\&format file ($.wat$).\\
     \end{tabular}
     \caption{Owi subcommands}
     \label{tab:owi_features}
@@ -72,14 +72,14 @@ The Owi repository maintains a folder with examples of how to use the different 
 
 Looking at the first example, some differences from KLEE are evident, specifically how the tool is informed about which variables are symbolic. KLEE uses the variable address and the type is disregarded in the whole process (the generated test cases detail values for each possible primitive type); Owi on the other hand expects to be told the symbolic variable type, through the available functions:
 
-\parbox{\textwidth}{
+% \parbox{\textwidth}{
 \begin{itemize}
     \item \lstinline$owi_i32()$ - to define 32-bit integer values, with 8-bit and 64-bit variants;
     \item \lstinline$owi_f32()$ - to define 32-bit floating-point values, with a 64-bit variant;
     \item \lstinline$owi_char()$ - to define character values;
     \item \lstinline$owi_bool()$ - to define boolean values.
 \end{itemize}
-}
+% }
 
 Unlike KLEE functions, these do not support any argument that allows defining a custom name for the symbolic variable; the symbols are identified by order of creation - if we define all positions of an array as symbolic, each position symbolic identifier would correspond to their array position, but if any other symbol is defined before the identifiers would shift by the number of predefined variables.
 
@@ -176,27 +176,29 @@ label={lst:owi-sym-command},
 owi sym main.wasm
 \end{lstlisting}
 
-Executing either \lstinline$c$ or \lstinline$sym$ subcommands generates some files inside the folder `owi-out' created on the current working directory: \lstinline$owi sym$ only generates test case files named `testcase-n.xml' being $n$ the number of results detected and starting from 1. The subcommand \lstinline$owi c$ also generates a file describing the test cases that fail execution, but also outputs an additional `metadata.xml' as described in \Cref{tab:owi_c_owi_out}, and a `a.out.wasm' file (the compiled sources); however, the test case and metadata files are generated in a subfolder called `test-suite' while the \glsxtrlong{wasm} module is created on the current working directory (at the same level as `owi-out' folder).
+Executing either \lstinline$c$ or \lstinline$sym$ subcommands generates some files inside the folder `owi-out' created on the current working directory: \lstinline$owi sym$ only generates test case files named `testcase-n.xml' being $n$ the number of results detected and starting from 1. The subcommand \lstinline$owi c$ also generates a file describing the test cases that fail execution, but also outputs an additional `metadata.xml' 
+% as described in \Cref{tab:owi_c_owi_out}
+, and a `a.out.wasm' file (the compiled sources); however, the test case and metadata files are generated in a subfolder called `test-suite' while the \glsxtrlong{wasm} module is created on the current working directory (at the same level as `owi-out' folder).
 For a visual reference of this file structure take a look at \Cref{lst:owi-generated-files}, consider `main.c' the input sources and `main.wasm' pre-compiled before running Owi.
 
-\begin{table}[ht]
-    \centering
-    \begin{tabular}{r|c|l}
-        \multicolumn{1}{c|}{Field} & \multicolumn{1}{c|}{Example} &\multicolumn{1}{c}{Description} \\
-        \hline
-        \hline
-        \lstinline$sourcecodelang$ & `C' & The programming language in \\&&which the input sources are written \\
-        \lstinline$producer$ & `owic' & The subcommand responsible for \\&&this metadata file.\\
-        \lstinline$specification$ & N/A & \multicolumn{1}{c}{No information on this}\\&& \multicolumn{1}{c}{field was found}\\
-        \lstinline$programfile$ & `main.c' & The input source files\\
-        \lstinline$programhash$ & b663247... & The compiled wasm module hash\\
-        \lstinline$entryfunction$ & `main' & \glsxtrshort{wasm} modules requires by \\&&default a specific entry point/function, \\&&in this case Owi defines `main'\\
-        \lstinline$architecture$ & `32bit' & The target architecture (defined by \\&&Owi)\\
-        \lstinline$creationtime$ & timestamp & The day and time this metadata file \\&&was created\\
-    \end{tabular}
-    \caption{Owi `metadata.xml' file contents.}
-    \label{tab:owi_c_owi_out}
-\end{table}
+% \begin{table}[ht]
+%     \centering
+%     \begin{tabular}{r|c|l}
+%         \multicolumn{1}{c|}{Field} & \multicolumn{1}{c|}{Example} &\multicolumn{1}{c}{Description} \\
+%         \hline
+%         \hline
+%         \lstinline$sourcecodelang$ & `C' & The programming language in \\&&which the input sources are \\&&written \\
+%         \lstinline$producer$ & `owic' & The subcommand responsible for \\&&this metadata file.\\
+%         \lstinline$specification$ & N/A & \multicolumn{1}{c}{No information on this}\\&& \multicolumn{1}{c}{field was found}\\
+%         \lstinline$programfile$ & `main.c' & The input source files\\
+%         \lstinline$programhash$ & b663247... & The compiled wasm module hash\\
+%         \lstinline$entryfunction$ & `main' & \glsxtrshort{wasm} modules requires by \\&&default a specific entry point, \\&&in this case Owi defines `main'\\
+%         \lstinline$architecture$ & `32bit' & The target architecture (defined \\&&by Owi)\\
+%         \lstinline$creationtime$ & timestamp & The day and time this metadata \\&&file was created\\
+%     \end{tabular}
+%     \caption{Owi `metadata.xml' file contents.}
+%     \label{tab:owi_c_owi_out}
+% \end{table}
 
 \noindent
 % \begin{minipage}{\textwidth}
