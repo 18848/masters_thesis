@@ -21,12 +21,13 @@
 \textit{Polytechnic Institute of Cávado and Ave}\\
 Barcelos, Portugal \\
 a18848@alunos.ipca.pt}
-% \and
-% \IEEEauthorblockN{2\textsuperscript{nd} Given Name Surname}
-% \IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
-% \textit{name of organization (of Aff.)}\\
-% City, Country \\
-% email address or ORCID}
+\and
+\IEEEauthorblockN{Nuno Lopes}
+\IEEEauthorblockA{\textit{2AI - School of Technology, IPCA} \\
+Barcelos, Portugal \\
+\textit{LASI - Associate Laboratory of Intelligent Systems}\\
+Guimarães, Portugal \\
+0000-0001-8897-5061}
 % \and
 % \IEEEauthorblockN{3\textsuperscript{rd} Given Name Surname}
 % \IEEEauthorblockA{\textit{dept. name of organization (of Aff.)} \\
@@ -56,21 +57,26 @@ a18848@alunos.ipca.pt}
 \maketitle
 
 \begin{abstract}
-This document is a model and instructions for \LaTeX.
-This and the IEEEtran.cls file define the components of your paper [title, text, heads, etc.]. *CRITICAL: Do Not Use Symbols, Special Characters, Footnotes, 
-or Math in Paper Title or Abstract.
+The security of an application showed to be a critical aspect of software development, and one way to test for vulnerabilities is through symbolic execution.
+
+This paper will present a comparative study of two symbolic execution tools, KLEE and Owi, applied to vulnerability detection in software applications. After experimenting with both tools, and analysing the results, it's noted better performance and more comprehensive results with KLEE.
 \end{abstract}
 
 \begin{IEEEkeywords}
-component, formatting, style, styling, insert
+Symbolic Execution, Application Security Testing, Static Code Analysis, KLEE, Owi
 \end{IEEEkeywords}
 
-\input{content/chap1.tex}
+\input{content/chap1}
 \input{content/chap2}
 \input{content/chap3-1_klee}
 \input{content/chap3-2_owi}
 \input{content/chap3-3_feat_comp}
 \input{content/chap4}
+\input{content/conclusion.tex}
+
+\section{ACKNOWLEDGMENTS}
+
+XXX
 
 % \section*{References}
 

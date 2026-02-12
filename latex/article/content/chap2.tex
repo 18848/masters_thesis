@@ -1,59 +1,59 @@
-\section{LITERATURE REVIEW} \label{chap:literature_review}
-The security of an application showed its first impacts around the beginning of the century with the increasing popularity of the \glsxtrfull{www} and the enablement of user-fuelled websites (like social media). This rapid evolution paired with the common lack of knowledge of the users but also of the developers caused the birth of Denial of Service and Cross-Site Scripting attacks among others \cite{Hoffman2024}.
+\section{RELATED WORK} \label{chap:literature_review}
+% The security of an application showed its first impacts around the beginning of the century with the increasing popularity of the \glsxtrfull{www} and the enablement of user-fuelled websites (like social media). This rapid evolution paired with the common lack of knowledge of the users but also of the developers caused the birth of Denial of Service and Cross-Site Scripting attacks among others \cite{Hoffman2024}.
 
-\subsection{Application Security Testing}
-\glsxtrfull{ast} includes every procedure that evaluates software security, these methods may include manual or automatic testing; manual testing may perform in the form of penetration tests, but automatic testing has 2 common variants, static (\glsxtrshort{sast}) and dynamic (\glsxtrshort{dast}).
+% \subsection{Application Security Testing}
+% \glsxtrfull{ast} includes every procedure that evaluates software security, these methods may include manual or automatic testing; manual testing may perform in the form of penetration tests, but automatic testing has 2 common variants, static (\glsxtrshort{sast}) and dynamic (\glsxtrshort{dast}).
 
-\glsxtrlong{sast} is a white-box approach to software security where we have access to source code and through analysis a developer can attempt to find vulnerabilities in it; its practice is also commonly described as finding code errors. 
+% \glsxtrlong{sast} is a white-box approach to software security where we have access to source code and through analysis a developer can attempt to find vulnerabilities in it; its practice is also commonly described as finding code errors. 
 
-\glsxtrlong{dast} is on the other hand also known as the black-box approach -- it has no knowledge of how a software is coded or designed. It only knows how to interact with the software and attempts to do so in a manner that it can find malfunctions and failures in the program execution; its results are the inputs used to break the application flow.
+% \glsxtrlong{dast} is on the other hand also known as the black-box approach -- it has no knowledge of how a software is coded or designed. It only knows how to interact with the software and attempts to do so in a manner that it can find malfunctions and failures in the program execution; its results are the inputs used to break the application flow.
 
 % There is also a practice known as \glsxtrlong{iast} which despite being described as a white-box technique, it also examines the software security during runtime, and it must be integrated with it. However, this represents runtime overhead and inability to detect client-side vulnerabilities \cite{sast-dast-iast}.
 
-\subsubsection{SAST vs. DAST}
+% \subsubsection{SAST vs. DAST}
 
-After looking at the research performed by \cite{SASTvsDAST}, a summarized version of the comparison between the two methods can be described as seen in \Cref{tab:sast_vs_dast}.
+% After looking at the research performed by \cite{SASTvsDAST}, a summarized version of the comparison between the two methods can be described as seen in \Cref{tab:sast_vs_dast}.
 
-\begin{table}[ht]
-\centering
-\begin{tabular}{c|c}
-\textbf{\glsxtrshort{sast}} & \textbf{\glsxtrshort{dast}}\\
-\hline
-\hline
-White-box testing  & Black-box testing \\
-\hline
-Test from the inside out  & Test from the outside in \\
-\hline
-Test internal behaviour  & Test external expectations \\
-\hline
-Validate code quality  & Validate system functionality \\
-\hline
-High granularity  & Low granularity \\
-\hline
-Full knowledge of & No knowledge of \\
-application structure & application structure \\
+% \begin{table}[ht]
+% \centering
+% \begin{tabular}{c|c}
+% \textbf{\glsxtrshort{sast}} & \textbf{\glsxtrshort{dast}}\\
+% \hline
+% \hline
+% White-box testing  & Black-box testing \\
+% \hline
+% Test from the inside out  & Test from the outside in \\
+% \hline
+% Test internal behaviour  & Test external expectations \\
+% \hline
+% Validate code quality  & Validate system functionality \\
+% \hline
+% High granularity  & Low granularity \\
+% \hline
+% Full knowledge of & No knowledge of \\
+% application structure & application structure \\
 
-\end{tabular}
-\caption{Summarized Theoretical Comparison of \glsxtrshort{sast} \& \glsxtrshort{dast}}
-\label{tab:sast_vs_dast}
-\end{table}
+% \end{tabular}
+% \caption{Summarized Theoretical Comparison of \glsxtrshort{sast} \& \glsxtrshort{dast}}
+% \label{tab:sast_vs_dast}
+% \end{table}
 
-This theoretical comparison is presented with a more practical one, where \cite{SASTvsDAST} tests, analyses, and studies different scans with different tools for both methods. The metrics used are the standard True Positive, True Negative, False Positive, False Negative (TP, TN, FP, FN) and are required to calculate the True Positive Rate (TPR) and False Positive Rate (FPR) which happen to be the most relevant rates that contribute to a grade of accuracy and confidence in each cybersecurity tool used. One such way to infer an accuracy metric is using Youden's Index that can be seen in \cref{equ:youden_index} as \citeauthor{owasp_youden_index} \cite{owasp_youden_index} described for the OWASP Benchmark.
+% This theoretical comparison is presented with a more practical one, where \cite{SASTvsDAST} tests, analyses, and studies different scans with different tools for both methods. The metrics used are the standard True Positive, True Negative, False Positive, False Negative (TP, TN, FP, FN) and are required to calculate the True Positive Rate (TPR) and False Positive Rate (FPR) which happen to be the most relevant rates that contribute to a grade of accuracy and confidence in each cybersecurity tool used. One such way to infer an accuracy metric is using Youden's Index that can be seen in \cref{equ:youden_index} as \citeauthor{owasp_youden_index} \cite{owasp_youden_index} described for the OWASP Benchmark.
 
-\begin{mycapequ}[htbp]
-    \centering
-    \caption{Youden's Index or Youden's J statistic}
-    \begin{equation}
-      \begin{aligned}
-        J &= TPR (True Positive Rate) - \\
-        &FPR (False Positive Rate)
-      \end{aligned}
-    \label{equ:youden_index}
-    \end{equation}
-\end{mycapequ}
+% \begin{mycapequ}[htbp]
+%     \centering
+%     \caption{Youden's Index or Youden's J statistic}
+%     \begin{equation}
+%       \begin{aligned}
+%         J &= TPR (True Positive Rate) - \\
+%         &FPR (False Positive Rate)
+%       \end{aligned}
+%     \label{equ:youden_index}
+%     \end{equation}
+% \end{mycapequ}
 
 
-% \citeauthor{owasp-devsecops-dast} \cite{owasp-devsecops-dast} also describes \glsxtrshort{dast} as ``especially helpful for detecting: input or output validation, authentication issues, server configuration mistakes'' and specifies that they ``allow for sophisticated scans on the client side and server side'' and require no implementation information (source code, framework, etc.). 
+% % \citeauthor{owasp-devsecops-dast} \cite{owasp-devsecops-dast} also describes \glsxtrshort{dast} as ``especially helpful for detecting: input or output validation, authentication issues, server configuration mistakes'' and specifies that they ``allow for sophisticated scans on the client side and server side'' and require no implementation information (source code, framework, etc.). 
 
 % \subsubsection{Software Development Life Cycle}
 
@@ -67,17 +67,10 @@ This theoretical comparison is presented with a more practical one, where \cite{
 %     \label{fig:SDLC}
 % \end{figure}
 
-\subsection{SAST - Static Application Security Testing}
-Expanding on the white-box technique, most vulnerabilities are due to developer's lack of awareness and/or bad programming practices \cite{SAST_opensource} in such a way that \citeauthor{owasp-devsecops-sast} \cite{owasp-devsecops-sast} defines it ``as part of a Code Review'', a ``method of computer program debugging that is done by examining the code without executing the program'', and also a good technic to help find:
-    \begin{itemize}
-        \item ``Syntax violations''
-        \item ``Security vulnerabilities''
-        \item ``Programming errors''
-        \item ``Coding standard violations''
-        \item ``Undefined values''
-    \end{itemize}
+% \subsection{SAST - Static Application Security Testing}
+Expanding on SAST, most vulnerabilities are due to developer's lack of awareness and/or bad programming practices \cite{SAST_opensource} in such a way that \citeauthor{owasp-devsecops-sast} \cite{owasp-devsecops-sast} defines it ``as part of a Code Review'', a ``method of computer program debugging that is done by examining the code without executing the program'', and also a good technic to help find: ``Syntax violations'', ``Security vulnerabilities'', ``Programming errors'', ``Coding standard violations'', and ``Undefined values''.
 
-\subsubsection{Symbolic Execution}
+\subsection{Symbolic Execution}
 Inside \glsxtrshort{sast}'s set of technics, introduced by \cite{King1976}, we find symbolic execution engines which can help protect systems that range from modern \glsxtrfull{soc} designs and hardware Trojans \cite{Vafaei2021}, to binary-level security analysis such as malware comprehension \cite{David2016} and even a symbiosis between symbolic and concrete execution \cite{Gritti2020}.
 All these tools share a common requirement: any instruction set ranging between machine code to source code. These tools excel by mimicking the execution of the analysed software, controlling each value the input influences in the form of symbolic values or variables.
 
@@ -142,3 +135,22 @@ Environment modelling is another very common problem in software analysis techni
 
 % \setool{Owi}
 % Owi seems to be the only tool explicitly focused on the \glsxtrlong{wasm} binary format in the list aggregated by \citeauthor{Luckow2017} \cite{Luckow2017}. Nevertheless, it presents promising work specially by their attempt to integrate with the \glsxtrshort{wasm} developer lifecycle with subcommands that allow for other features useful for the everyday tasks like formatting of files and validation of modules \cite{owi_gh}. These and many more features including symbolic execution will be discussed in \cref{section:owi} as this is the second choice for comparison.
+
+
+\subsection{Symbolic Execution Tools}\label{chap:symbolic_execution_tools}
+
+There are a couple of tools available that perform symbolic execution in numerous ways with different focus and strengths. A good agglomerate of these tools is maintained in a GitHub repository owned by \citeauthor{Luckow2017} \cite{Luckow2017}. 
+% There we find symbolic execution tools focused on binaries and various programming languages like Java, JavaScript, or even Rust, but also portable platforms like \glsxtrshort{wasm} and LLVM.
+
+\newcommand{\setool}[1]{\item{\textbf{\textit{#1}}}}
+\begin{itemize}
+    \setool{\glsxtrfull{spf}} \glsxtrshort{spf} is an extension for the \glsxtrfull{jpf}, a `model checking framework for Java\textsuperscript{TM} bytecode programs' \cite{spf,jpf_wiki}. %\glsxtrshort{spf} allows symbolic execution on methods with arguments of basic types, strings, arrays and data structures \cite{spf}.
+    \setool{Jalangi2} Jalangi2 is a framework for analysis of JavaScript programs, designed to work on browser applications \cite{jalangi2}.
+    \setool{SymJS} SymJS explores Javascript applications and is packed with a symbolic execution engine and also `an automatic event explorer for Web pages' \cite{Li2014}.
+    \setool{Cloud9} Cloud9 was designed with the intent of reducing the `resource-intensive ... nature of high-quality software testing' \cite{cloud9}.
+    \setool{Kite} Kite is a Proof-of-Concept tool that tackles the symbolic execution problem using the \glsxtrfull{cdse} algorithm which is able to dynamically reduce path exploration and is also capable of learning from earlier conflicts \cite{cdse_kite,kite_web}.
+    \setool{KLEE} KLEE is perhaps the most relevant tool to address in the LLVM field considering how both Kite and Cloud9 were developed on top of the work acomplished by KLEE. KLEE becomes dynamic through its outside environment interaction features \cite{Cadar2008}.
+    \setool{Owi} Owi presents promising work specially by their attempt to integrate with the \glsxtrshort{wasm} developer lifecycle with subcommands that allow for other features useful for the everyday tasks like formatting of files and validation of modules but also supports symbolic execution \cite{owi_gh}.
+\end{itemize}
+
+KLEE and Owi are the selected tools for this comparison, given multiple factors such as their wide language support, their impact on Web Applications, and the availability of sources and documentation. Other tools such as \glsxtrshort{spf} and Jalangi2 are also interesting but they are focused on specific languages and their learning curve is quite steep, especially for beginners. SymJS, Cloud9, and Kite are also interesting but they lack sources and documentation, making it very hard or even impossible to use them for this comparison.

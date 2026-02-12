@@ -17,7 +17,7 @@
 			"tools": [
 				"Overleaf (re-build)",
 			],
-		}
+		},
 	],
 	"latex-workshop.latex.tools": [
 		{
